@@ -1,0 +1,15 @@
+CLASS: KingdomManager
+
+SUBMODULE: main
+	 IMPORT: none
+	 EXPORT: none
+	 ASSERTION: Creates a new Kingdom class object and calls the Menu class.
+     ALGORITHM:
+				TRY
+					CONSTRUCT kingdom USING default
+					CALL Menu method menu <- kingdom
+				END TRY
+				CATCH Exception 
+					CALL UserInterface method showError <- error
+			END SUBMODULE
+END CLASS

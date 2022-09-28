@@ -1,0 +1,102 @@
+Animal = Alliance
+Dog = House
+Cat = Army
+
+
+When you convert to alliance, how do you know whether you need battle strength of house and army
+
+
+Abstract class - gets the common methods between the two classes. Alliance is abstract class, you can't instantiate an Alliance. You make either a House or an Army.
+Will have Alliance array in Kingdom (can remove addHouse, addArmy) -- we dont need the extra methods we made and we can use addAlliance on its own
+	Max of alliance array is 30.
+
+
+Abstract methods in Alliance -- population & clone.
+allianceArray[i].clone; --> goes to clone method, and automatically downcasts it to whichever 
+	Common stuff - getName, getYears, getBanner 
+
+	Cat and Dog both have sound() but have different implementation (dog has woof, cat has meow)
+	
+	Animal ani = new Cat()
+	ani.sound() // 
+
+
+
+	Interfaces only have abstract methods // public abstract String sound();
+	
+Wrong: newArr[ii] = new Cat (arr[ii]);
+Correct: arr[ii].clone(); 					Since we don't know the datatype
+
+
+
+	
+------------------
+public class Alliance *implements* Combatable
+
+House and Army *extends* Alliance
+
+
+
+Steps
+
+	1. Set up Alliance class; copy classfields,getters,setters of name,years,banner
+	2. Remove repeated methods from Army and House (getters/setters/classfields)
+	3. Declare abstract methods in Alliance (public abstract void clone(); )
+	4. in Kingdom -- strip the two arrays into one Alliance array of size 30
+			classfields: allianceArray and allianceCount
+
+	Alliance has clone method which is abstract 
+	@ Override in House/Army equals,population, methods
+
+Fix comments & Pseudo
+
+-----------
+1. toString/toFileString in Alliance - how it works if not abstract?
+
+	_
+
+2. Battlestrength? how does it work now. how does it work with Kingdom & Combatable.
+
+	Alliance AND Kingdom implements Combatable
+	
+
+3. Warning - banner object - what does it mean?
+
+	Everything concerning Banner in House is now in Alliance.
+
+4. Walk through @ Override in House/Army equals/population/whichever other methods
+
+
+addAlliance
+
+Currently:
+	Gets user input, depending on input, makes new object in UserInterface 
+	from user input (validated in UserInterface). UserInterface returns an object 
+	and then addHouseObjects/addArmyObjects adds the object to the array (fills it)
+
+Inheritance:
+
+	Get user input, depending on input, make a new Army or House object (validated). 		UserInterface returns the House/Army object then instead of having two different 		add methods, we  
+
+ addAlliance would add House or Army objects to an Alliance array. 
+
+	
+	UserInterface returns an alliance, and passes it  to Kingdom, which adds it to Alliance array
+
+
+	UserInterface:
+		Have a method asking for name, years, banner for Alliance
+
+
+
+
+1. How to do 2d.p:
+	*100, truncate int,truncate double, /100 (ViewAlliance)
+
+2. Try catch for validations in UserInterface <**done**>
+
+3. Fix equals method for compareKingdoms 
+
+4. Fix banner object <**done**>
+
+5. Make sure validation messages are working everywhere // implement testharness

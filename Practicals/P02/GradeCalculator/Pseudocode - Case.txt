@@ -1,0 +1,34 @@
+SUBMODULE: markCheck
+IMPORTS: unitTotal(Real)
+EXPORTS: grade(String)
+
+BEGIN
+
+// Get input from user for program to work
+    OUTPUT "Please enter the total mark you recieved 
+    INPUT unitTotal(Real)
+
+    newMark := mark DIV 10
+	
+	CASE BASED ON NEWMARK
+	<0:
+		OUTPUT "Invalid"
+	<5:
+		OUTPUT "F-" + mark"
+	<6:
+		OUTPUT "P-5"
+	<7:
+		OUTPUT "C-6"
+	<8:
+		OUTPUT "D-7"
+	<9:
+		OUTPUT "HD-8"
+	<10:
+		OUTPUT "HD-9"
+	=10:
+		OUTPUT "HD-10"
+	>10:
+		OUTPUT "Invalid"	
+	END CASE
+END
+

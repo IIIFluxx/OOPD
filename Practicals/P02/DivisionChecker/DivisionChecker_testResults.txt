@@ -1,0 +1,25 @@
+Program: DivisionChecker.java
+Design Date: 22/03/2018
+Test Date: 13/08/19
+
+Total Tests: 3
+Tests Passed: 2
+Tests Failed: 1
+
+Note: 
+
+TEST RESULTS:
+ID: Category:           Test Data:        Expected Behaviour:          Actual Behaviour:     						Pass(P)/Fail(F)
+                        (num1,num2)
+_________________________________________________________________________________________________________________________________________
+1   divisible           (9, 3)             "Divisible"           		"Divisible" 									P                                                     
+_________________________________________________________________________________________________________________________________________
+2   not divisible       (9, 2)             "Not Divisible"				"Not Divisible"									P  	                                                          
+_________________________________________________________________________________________________________________________________________
+3   Divide by 0         (9, 0)             "Not Divisible"  "Exception in thread "main" 
+															java.lang.ArithmeticException: / by zero
+															at DivisionChecker.main(DivisionChecker.java:18)"			F                                                     
+_________________________________________________________________________________________________________________________________________
+
+
+

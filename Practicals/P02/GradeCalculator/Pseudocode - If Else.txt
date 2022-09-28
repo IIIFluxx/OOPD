@@ -1,0 +1,34 @@
+SUBMODULE: markCheck
+IMPORTS: unitTotal(Real)
+EXPORTS: grade(String)
+
+BEGIN
+
+// Get input from user for program to work
+    OUTPUT "Please enter the total mark you recieved"
+    INPUT unitTotal(Real)
+    
+	mark := (Convert to Integer)(Round unitTotal to the nearest whole number)
+    
+	IF mark < 0 THEN
+		OUTPUT "Invalid"
+	ELSE IF mark >= 0 AND mark < 50 THEN
+		OUTPUT "F-" + mark"
+	ELSE IF mark >= 50 AND mark < 60 THEN
+		OUTPUT "P-5"
+	ELSE IF mark >= 60 AND mark < 70 THEN
+		OUTPUT "C-6"
+	ELSE IF mark >= 70 AND mark < 80 THEN
+		OUTPUT "D-7"
+	ELSE IF mark >= 80 AND mark < 90 THEN
+		OUTPUT "HD-8"
+	ELSE IF mark >= 90 AND mark < 100 THEN
+		OUTPUT "HD-9"
+	ELSE IF mark = 100 THEN
+		OUTPUT "HD-10"
+	ELSE IF mark > 100 THEN
+		OUTPUT "Invalid"	
+	END IF
+
+END
+

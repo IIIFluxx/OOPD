@@ -1,0 +1,189 @@
+CLASS: House extends to AllianceClass
+
+PUBLIC CLASS CONSTANTS: 
+						MINBANNERMEN := 25
+						MAXBANNERMEN := 80000
+						BANNERMEN_POP_MULTIPLIER := 450
+						BANNERMEN_BS_MULTIPLIER := 2
+						CASTLE_BS_MULTIPLIER := 20000
+						
+CLASS FIELDS: 
+              bannermen (Integer)
+              castle (String)
+
+CONSTRUCTORS:    
+Default:
+    IMPORT: none
+    EXPORT: none
+    ASSERTION:
+    ALGORITHM:  super <- none
+				bannermen := 2
+                castle := ""
+	END SUBMODULE			
+
+Alternate:
+    IMPORT: inName(String), inYears(Integer), inBanner(BannerClass), 
+            inBannermen(Integer), inCastle(String)
+    EXPORT: none
+    ASSERTION: Creates the House object if imports are valid, FAILS otherwise 
+    ALGORITHM:
+				super <- inName, inYears, inBanner
+				setBannermen <- inBannermen
+				setCastle <- inCastle
+			END SUBMODULE
+			
+Copy:
+    IMPORT: inHouse (House)
+    EXPORT: address of new House class object
+    ASSERTION: Creates an object with an identical object state as the import.
+    ALGORITHM:	
+				super <- inHouse
+				bannermen := inHouse.getBannermen <- none
+				castle := inHouse.getCastle <- none
+			END SUBMODULE     
+                
+MUTATORS:
+
+
+SUBMODULE: setBannermen
+    IMPORT: inBannermen (Integer)
+    EXPORT: none
+    ASSERTION: sets the number of bannermen if imports are valid, 
+               otherwise, fails. 
+    ALGORITHM:	IF (validateBannermen <- inBannermen) THEN
+					bannermen := inBannermen
+				ELSE
+					THROW IllegalArgumentException "Invalid number of bannermen"
+				ENDIF
+			END SUBMODULE
+	
+		
+	SUBMODULE: setCastle
+	IMPORT: inCastle (String)
+	EXPORT: none
+	ASSERTION: Sets the name to inCastle.
+	ALGORITHM:
+				IF validateName <- inCastle THEN
+					name := inCastle
+				ELSE
+					THROW IllegalArgumentException "Invalid castle description 
+                                        - must not be null"
+				ENDIF
+			END SUBMODULE
+
+
+
+
+SUBMODULE: clone
+    IMPORT: none
+    EXPORT: cloneHouse object
+    ASSERTION: Makes a copy of the House object.
+    ALGORITHM:  
+				Export (CONSTRUCT new House object)
+			END SUBMODULE
+	
+ACCESSORS: 
+    
+SUBMODULE: getBannermen
+    IMPORT: none
+    EXPORT: bannermen(Integer)
+	ALGORITHM: 
+				export copy of bannermen
+			END SUBMODULE
+	
+SUBMODULE: getCastle
+    IMPORT: none
+    EXPORT: castle(String)
+	ALGORITHM: 
+				export copy of castle
+			END SUBMODULE
+
+SUBMODULE: equals
+	IMPORT: inObj (check to ensure if House object)
+	EXPORT: isEqual (boolean)
+	ALGORITHM:
+			isEqual := false
+			IF inObj is really a House THEN
+				Make inObj a House named inHouse	
+				IF superclass classfields same as inHouse THEN
+					IF bannermen same as inHouse.getBannermen <-- none THEN
+						IF castle same as inHouse.getCastle <-- none THEN
+							isEqual := true
+						ENDIF
+					ENDIF
+				ENDIF
+			ENDIF
+		END SUBMODULE
+
+SUBMODULE toString
+	IMPORT: none
+	EXPORT: none
+	ASSERTION:
+	ALGORITHM: 
+				OUTPUT super.toString <- none + " This house has " 
+				+ bannermen + " Bannerman and a castle named: "
+				+ castle + ". "
+			END SUBMODULE
+		
+SUBMODULE toFileString
+	IMPORT: none
+	EXPORT: none
+	ASSERTION:
+	ALGORITHM: 
+				OUTPUT "H," + super.toFileString <- none + ","
+				+ bannermen + "," + castle + NEWLINE
+			END SUBMODULE
+
+SUBMODULE population
+	IMPORT: none
+	EXPORT: none
+	ASSERTION:
+	ALGORITHM: 
+				population(Integer) := 0
+				population := bannermen + BANNERMEN_POP_MULTIPLIER
+				OUTPUT "The House of " + super.getName <- none 
+						+ " has a population of " + population + "." + NEWLINE)
+			END SUBMODULE
+
+
+
+	SUBMODULE battleStrength
+	IMPORT: none
+	EXPORT: strength(Integer)
+	ASSERTION:
+	ALGORITHM: 
+		strength(Integer) := 0
+		IF castle is equal to ("") THEN
+            strength := bannermen * BANNERMEN_BS_MULTIPLIER
+        ENDIF
+		IF castle is not equal to ("")
+			strength := (Convert to Integer)(bannermen * 2 
+											+ CASTLE_BS_MULTIPLIER)
+		ENDIF
+	END SUBMODULE
+	
+                
+PRIVATE SUBMODULES:
+SUBMODULE: validateCastle
+    IMPORT: inCastle(String)
+    EXPORT: test (boolean)
+    ASSERTION: Castle description must be non-empty (not null)
+	ALGORITHM:
+		test(boolean) := false
+		IF inCastle is not null THEN
+			test := true
+		ENDIF	
+	END SUBMODULE
+	
+			
+			
+SUBMODULE: validateBannermen
+    IMPORT: inBannermen(Integer)
+    EXPORT: valid (boolean)
+    ASSERTION: Number of bannermen must be between 25 and 80,000 (inclusive).
+    ALGORITHM:  
+				valid := false
+				valid := (inBannermen GREATER THAN OR EQUAL TO MINBANNERMEN
+						AND inBannermen LESS THAN OR EQUAL TO MAXBANNERMEN)      
+    END SUBMODULE
+END CLASS        

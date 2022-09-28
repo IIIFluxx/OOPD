@@ -1,0 +1,15 @@
+MAIN
+  OUTPUT "Please enter an integer in order to calculate its factorial: "
+  INPUT num (Integer)
+  IF num < 0 THEN
+	OUTPUT "Input integer should not be negative. Factorials do not exist for negative numbers"
+  ELSE IF num := 0 THEN
+	OUTPUT "The value of 0! is 1"
+  ELSE
+	FOR i = 1 TO num CHANGEBY 1
+		factorial := factorial * i  
+	OUTPUT "Factorial of " + num + " is: " + factorial
+
+	   
+	   
+	   

@@ -1,0 +1,87 @@
+SUBMODULE: calcArea
+IMPORTS: radius (Real), diameter(Integer), length (Real), width(Real), base (Real), height (Real), truncatedArea (Integer), metres(Real), centimetres (Real), millimetres (Real), min(Constant), response(Character), loopCond(Character)
+EXPORTS: areaCircle (Real), areaRectangle (Real), areaTriangle (Real)
+ 
+ALGORITHM:
+	MAIN
+	
+		// Obtaining neccessary data in order for the program to run.
+		min :=  0
+		
+		DO
+			OUTPUT "Please select which shape you would like to enter from the following: "
+			OUTPUT "1 for Circle, 2 for Rectangle, 3 for Triangle, Q for quit"
+			
+				
+			CASE BASED ON RESPONSE:
+				1 : 
+					DO
+						OUTPUT "Please enter a value for the diameter of the circle(cm)"
+						INPUT diameter(Integer)				
+					WHILE diameter < min
+
+					// Calculate the area of a circle
+					radius := (Convert to Real)(diameter)/2
+					areaCircle := π x (radius^2)
+					// areaCircle DIV & MOD 10*x* amount to isolate m, cm and mm
+					truncatedArea := (Convert to Integer)areaCircle
+					metres := truncatedArea DIV 10000
+					millimetres := (areaCircle - (Convert to Real)(truncatedArea)) x 100
+					centimetres := truncatedArea MOD 10000
+					OUTPUT "Area of the circle is " + metres + "m^2, " + centimetres + "cm^2 and " + millimetres + "mm^2"
+					
+				2 :
+					DO
+					
+					OUTPUT "Please enter a value for the length of the rectangle (cm) "
+					INPUT length(Real)
+					OUTPUT "Please enter a value for the width of the rectangle (cm) "
+					INPUT width(Real)
+					
+					WHILE length < min & width < min
+					
+					
+					// Calculate the area of a rectangle
+					areaRectangle := length x width
+					// areaRectangle DIV & MOD 10*x* amount to isolate m, cm and mm
+					truncatedArea := (Convert to Integer)areaRectangle
+					metres := truncatedArea DIV 10000
+					millimetres := (areaRectangle - (Convert to Real)(truncatedArea)) x 100
+					centimetres := truncatedArea MOD 10000
+					OUTPUT "Area of the rectangle is " + metres + "m^2, " + centimetres + "cm^2 and " + millimetres + "mm^2"
+					
+				3 :
+					DO
+						OUTPUT "Please enter a value for the base length of the triangle (mm)"
+						INPUT base(Real)
+						OUTPUT "Please enter a value for the height of the triangle (mm) "
+						INPUT height(Real)
+					WHILE base < min & height < min
+					
+					// Convert to centimetres
+						
+					base := base/10
+					height := height/10
+						
+					// Calculate the area of a triangle
+					areaTriangle := base x height/2.0
+					// areaTriangle DIV & MOD 10*x* amount to isolate m, cm and mm
+					truncatedArea := (Convert to Integer)areaTriangle
+					metres := truncatedArea DIV 10000
+					millimetres := (areaTriangle - (Convert to Real)(truncatedArea)) x 100
+					centimetres := truncatedArea MOD 10000
+					
+					OUTPUT "Area of the triangle is " + metres + "m^2, " + centimetres + "cm^2 and " + millimetres + "mm^2"
+					
+				DEFAULT :
+					OUTPUT "That option is an invalid option."
+			End Case
+			OUTPUT "Do you wish to calculate another shape area? (Y for yes, N for no)"
+			INPUT response(character)
+		WHILE (loopCond = Y)
+	Exit
+		
+
+
+		
+	

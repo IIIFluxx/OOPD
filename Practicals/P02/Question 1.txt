@@ -1,0 +1,6 @@
+(a): kirk.equals(spock)
+(b) yoda % 2 && han % 2 (if remainder, odd, if not, even)
+(c) (jon || arya) == "S"
+(d) spock.CharAt(0) (equate that to a variable and println the variable)
+(e) jon == arya
+(f) (luke > 0) && (steve >= 25.0 && steve <= 125.0)

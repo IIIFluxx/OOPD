@@ -1,0 +1,98 @@
+// Input (metres): :Length, width, depth (METRES)
+// Process: - calculate  the volume of  water 
+            - loop if then statement 
+// Output:
+
+
+
+MAIN
+    Do   
+        OUTPUT "Please enter the first letter of your first name - J, C or R"
+        INPUT username
+        IF username = J THEN
+            name = "Joey"
+            OUTPUT "Please enter which your choice between the two choices you are given - one (1) for Sting Rays or two (2) for Arowana"
+            INPUT = speciesChoice
+            IF speciesChoice = 1 THEN
+                unit = 0.5
+                animal = "sting ray(s)"
+            ELSE IF speciesChoice = 2 THEN
+                unit = 0.4
+                animal = "arowana(s)"
+            ELSE
+                OUTPUT "Invalid input, please enter 1 or 2"
+            calcVolume <- none
+            
+        ELSE IF username = C THEN
+            name = "Cory"
+            OUTPUT "Please enter which your choice between the two choices you are given - one (1) for Koi or two (2) for Puffer Fish"
+            INPUT = speciesChoice
+            IF speciesChoice = 1 THEN
+                unit = 0.6
+                animal = "koi"
+            ELSE IF speciesChoice = 2 THEN
+                unit = 0.8
+                animal = "puffer fish(es)"
+            ELSE
+                OUTPUT "Invalid input, please enter 1 or 2"
+            calcVolume <- none
+        ELSE IF username = R THEN
+            name = "Rachel"
+            OUTPUT "Please enter which your choice between the two choices you are given - one (1) for Turtles or two (2) for Frogs"
+            INPUT = speciesChoice
+            IF speciesChoice = 1 THEN
+                unit = 1.2
+                animal = "turtle(s)"
+            ELSE IF speciesChoice = 2 THEN
+                unit = 4.5
+                animal = "frog(s)"
+            ELSE
+                OUTPUT "Invalid input, please enter 1 or 2"
+            calcVolume <- none
+        END IF    
+        
+        calcNumAnimals <- volume, name, unit, animal
+        OUTPUT "Would you like to try again? (y for yes, n for no)"
+        INPUT loopCond
+    WHILE loopCond = 'y' OR loopCond = 'Y'
+    
+
+
+
+SUBMODULE: calcVolume  (int)
+IMPORTS: 
+EXPORTS: volume (Integer)
+ALGORITHM:
+            OUTPUT " Please enter an integer in metres for the length of the pond"
+            INPUT length (Integer)
+            
+            OUTPUT " Please enter an integer in metres for the width of the pond"
+            INPUT width (Integer)
+            
+            OUTPUT " Please enter an integer in metres for the depth of the pond"
+            INPUT depth (Integer)
+            
+            volume = length * width * depth
+            return volume
+
+
+SUBMODULE: calcNumAnimals  (void)
+IMPORTS: volume (Integer), name(String), unit (Integer), animal(String)
+EXPORTS: none
+ALGORITHM:
+        animalCount(Integer)
+        animalCount = unit * volume
+        IF name = "Joey" AND speciesChoice = 1 THEN
+            OUTPUT name + " can store " + animalCount + " " + animal " + volume + " m^3 pond."
+        ELSE IF name = "Joey" AND speciesChoice = 2 THEN
+            OUTPUT name + " can store " + animalCount + " " + animal " + volume + " m^3 pond."
+        ELSE IF name = "Cory" AND speciesChoice = 1 THEN 
+            OUTPUT name + " can store " + animalCount + " " + animal " + volume + " m^3 pond."
+        ELSE IF name = "Cory" AND speciesChoice = 2 THEN
+            OUTPUT name + " can store " + animalCount + " " + animal " + volume + " m^3 pond."
+        ELSE IF name = "Rachel" AND speciesChoice = 1 THEN
+            OUTPUT name + " can store " + animalCount + " " + animal " + volume + " m^3 pond."
+        ELSE IF name = "Rachel" AND speciesChoice = 2 THEN
+            OUTPUT name + " can store " + animalCount + " " + animal " + volume + " m^3 pond."
+
+        

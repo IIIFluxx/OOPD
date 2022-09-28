@@ -1,0 +1,217 @@
+CLASS: FileManager
+
+						
+CLASS FIELDS: 	lineArray(String)
+
+			
+SUBMODULE: readFile
+    IMPORT: fileName(String)
+    EXPORT: 
+    ASSERTION: 
+    ALGORITHM: 
+			fileStrm (FileInputStream object) := NULL
+			rdr (InputStreamReader object)
+			bufRdr (BufferedReader object)
+			lineNum (Integer)
+			line (String)
+			TRY THE FOLLOWING
+				fileStrm := new FileInputStream()
+				rdr := new InputStreamReader(fileStrm)
+				bufRdr := new BufferedReader(rdr)
+				lineNum := 0
+				line := bufRdr.readLine()
+				WHILE line DOES NOT EQUAL NULL DO 
+					processLine(line,lineArray[])
+					line := bufRdr.readLine()
+					lineNum++
+				ENDWHILE
+				close fileStrm()
+			END TRY
+			
+			CATCH AN IOException e 
+				IF fileStrm DOES NOT EQUAL NULL  
+					TRY
+						fileStrm.close() 
+					CATCH IOException ex2 { } 
+					END TRY
+				END IF
+			END CATCH
+		END SUBMODULE
+	
+	
+SUBMODULE: lineArrayValidation
+    IMPORT: line(String)
+    EXPORT: 
+    ASSERTION: 
+    ALGORITHM:
+			CREATE OBJECT IllegalArgumentException e := new IllegalArgumentException("Invalid length") 
+			TRY
+				lineArray[] = line.split(",") 
+				IF LENGTH OF lineArray DOES NOT EQUAL 8 OR 9
+					THROW exception
+				END IF
+				IF LENGTH OF lineArray[0] DOES NOT EQUAL 1
+					THROW exception
+				IF lineArray[0] DOES NOT EQUAL 'H' OR 'A'
+					throw exception
+				END IF
+				IF isValid() = TRUE THEN
+					name = lineArray[1]
+					years = ((Make into Integer)(lineArray[2])
+					type(Character) := CHARACTER AT lineArray[0]
+					sigil(String) := lineArray[3]
+					sigilColour(String) := lineArray[4]
+					bannerColor(String) := lineArray[5]
+					bannerObj(BannerClass) = MAKE NEW BannerClass(sigil, bannerColour, sigilColour)
+					
+			CASE type OF 
+				H:			
+					bannermen := lineArray[6] 
+					castle := lineArray[7] 
+					houseObj = MAKE NEW House(name, years, bannermen, castle, bannerObj) 
+					Kingdom.addHouseObjects(houseObj)
+					break out of loop
+
+				A:
+					footmen = (Parse into Double)(lineArray[6]) 
+					archers = (Parse into Double)(lineArray[7]) 
+					history = lineArray[8] 
+					ArmyClass armyObj := MAKE NEW ArmyClass(name, years, footmen, archers, history, bannerObj) 
+					Kingdom.addArmyObjects(armyObj)
+					break out of loop
+				default:
+				
+					THROW NEW IllegalArgumentException("Invalid type")
+			END CASE
+		
+		CATCH IllegalArgumentException e
+			UserInterface.showError(getMessage())
+		END CATCH
+	END SUBMODULE
+---------------------
+
+SUBMODULE: writeFile
+IMPORT: fileOutputName(String), houseArray(House), armyArray(ArmyClass)
+EXPORT: 
+ASSERTION: 
+ALGORITHM:
+
+			
+		fileStrm(FileOutputStream object) := NULL
+		pw(PrintWriter object)
+		TRY
+		{
+			fileStrm = new FileOutputStream(fileOutputName) 
+			pw = new PrintWriter(fileStrm) 
+			Use getters to get both arrays and count integer variables of both arrays
+			FOR i:=0 TO houseCount CHANGEBY 1 DO
+				pw.OUTPUT toFileString per House array element
+			END FOR
+			FOR i:=0 TO armyCount CHANGEBY 1 DO
+				pw.OUTPUT toFileString per Army array element
+			END FOR
+			Close pw
+		END TRY
+		CATCH IOException e 
+			IF fileStrm DOES NOT EQUAL NULL
+				TRY fileStrm.close()
+				CATCH IOException ex2 { }
+			END IF
+		END CATCH
+		OUTPUT ERROR MESSAGE	
+	END SUBMODULE
+
+SUBMODULE: validateLine
+IMPORT: lineArray(String array)
+EXPORT: 
+ASSERTION: 
+ALGORITHM:
+		isValid(boolean):= false;
+        name(String) := lineArray[1];                                            
+        years(Integer):= Integer.parseInt(lineArray[2]);                         
+        type(Character) := lineArray[0].charAt(0);                                  
+        sigil(String) := lineArray[3];                                           
+        sigilColor(String):= lineArray[5];                                      
+        bannerColor(String):= lineArray[4]; 
+        isValid := Call the following UserInterface methods: 
+						validateString(name) 
+						AND validateYears(years) 
+						AND validateSigil(sigil) 
+						AND validateColor(sigilColor) 
+						AND validateColor(bannerColor)
+            return isValid
+
+SUBMODULE: validateArmy
+IMPORT: lineArray(String array)
+EXPORT: 
+ASSERTION: 
+ALGORITHM:
+		valid(boolean):= false
+		footmen(double):= Double.parseDouble(lineArray[6]);
+		archers(double):= Double.parseDouble(lineArray[7]);
+		history(String):= lineArray[8];
+		valid := Call the following UserInterface methods:
+						validateFootmen(footmen) 
+						AND validateArchers(archers)
+						AND validateString(history)
+        return valid
+
+
+SUBMODULE: validateHouse
+IMPORT: lineArray(String array)
+EXPORT: 
+ASSERTION: 
+ALGORITHM:
+		valid(boolean) = false;
+        bannermen(integer) = Integer.parseInt(lineArray[6]);
+        castle(String) = lineArray[7];
+        valid = Call the following UserInterface methods:
+				validateBannermen(bannermen) 
+				AND validateString(castle); 
+        return valid;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,8 @@
+INTERFACE Combatable
+	ABSTRACT METHOD: battleStrength
+		PURPOSE: Communicates between superclass and subclasses' to work 
+				 alongside the program's battleStrength functionality.
+		IMPORTS: none (void)
+		EXPORTS: integer (int)
+		ALGORITHM:
+			battleStrength <- none

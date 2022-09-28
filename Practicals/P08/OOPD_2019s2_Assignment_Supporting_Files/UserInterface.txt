@@ -1,0 +1,113 @@
+CLASS UserInterface
+
+
+	OUTPUT "Please enter 1 (one) for House, 2 (two) for Army"
+	INPUT userAlliance
+	
+	CASE 1:
+			getHouseObject <- none
+	CASE 2: 
+			getArmyObject <- none
+	DEFAULT:
+			OUTPUT "Invalid option"
+	
+	
+	SUBMODULE getHouseObject
+	IMPORT: none
+	EXPORT: houseObj(House)
+	ALGORITHM:
+				OUTPUT "Please input the name of your House"
+				INPUT name
+				 
+				DO
+					OUTPUT "Please input the number of years"
+					INPUT years
+				WHILE validateYears
+				
+				DO
+					OUTPUT "Please input the number of bannermen"
+					INPUT bannermen
+				WHILE validateBannermen
+				
+				OUTPUT "Please input the name of your Castle"
+				INPUT castle
+				
+				CREATE houseObj
+				Pass houseObj back to Kingdom
+				
+				
+	SUBMODULE getArmyObject
+	IMPORT: none
+	EXPORT: armyObj(ArmyClass)
+	ALGORITHM:
+				OUTPUT "Please input the name of your Army"
+				INPUT name
+				 
+				DO
+					OUTPUT "Please input the number of years"
+					INPUT years
+				WHILE validateYears
+				
+				DO
+					OUTPUT "Please input the number of footmen"
+					INPUT footmen
+				WHILE validateFootmen
+				
+				DO
+					OUTPUT "Please input the number of squads of archers"
+					INPUT footmen
+				WHILE validateArchers
+				
+				OUTPUT "Please input the details of your army's history"
+				INPUT history
+				
+				CREATE armyObj
+				Pass armyObj back to Kingdom
+				
+	SUBMODULE: getFileName
+	IMPORT: none
+	EXPORT: fileName(String)
+	ALGORITHM: 
+			OUTPUT "Please enter the name of your file"
+			INPUT fileName
+			Pass fileName to FileManager Class
+	
+	
+				
+	SUBMODULE: validateYears
+    IMPORT: inYears(Integer)
+    EXPORT: valid (boolean)
+    ASSERTION: Number of years must be between 1 and 10,000 (inclusive)
+    ALGORITHM:  
+				valid := (inYears >= minyears) AND (inYears <= maxyears)
+			
+				
+	SUBMODULE: validateBannermen
+    IMPORT: inBannermen(Integer)
+    EXPORT: valid (boolean)
+    ASSERTION: Number of bannermen must be between 25 and 80,000 (inclusive).
+    ALGORITHM:  
+				valid := (inBannermen >= maxbannermen) AND (inBannermen <= minbannermen)
+	
+	SUBMODULE: validateYears
+    IMPORT: inYears(Integer)
+    EXPORT: valid (boolean)
+    ASSERTION: Number of years must be between 1 and 10,000 (inclusive)
+    ALGORITHM:  
+				valid := (inYears > minyears) AND (inYears < maxyears)
+
+SUBMODULE: validateFootmen
+    IMPORT: inFootmen(Double)
+    EXPORT: valid (boolean)
+    ASSERTION: Number of groups of footmen must be between 3.5 and 160.5 (inclusive)
+    ALGORITHM: 
+				valid := (inFootmen >= minfootmen) AND (inFootmen <= maxfootmen)
+
+SUBMODULE: validateArchers
+    IMPORT: inArchers(Double)
+    EXPORT: valid (boolean)
+    ASSERTION: Number of squads of archers must be between 1.5 and 112.5 (inclusive)
+    ALGORITHM: 
+				valid := (inArchers >= minarchers) AND (inArchers <= maxarchers)
+				
+				

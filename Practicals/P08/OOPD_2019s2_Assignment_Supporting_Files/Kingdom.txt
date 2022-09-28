@@ -1,0 +1,230 @@
+CLASS: Kingdom
+
+PUBLIC CLASS CONSTANTS: ARRAYLENGTH := 15
+						
+CLASS FIELDS: 	houseArray(House object)
+				armyArray(ArmyClass object)
+
+CONSTRUCTORS:    
+Default:
+    IMPORT: none
+    EXPORT: none
+    ASSERTION:
+    ALGORITHM:  
+				houseArray[](House)
+				armyArray[] (ArmyClass)
+				armyCount := 0
+				houseCount := 0
+			END SUBMODULE
+			
+SUBMODULE: addAlliance
+    IMPORT: inHouse(House), inArmy(ArmyClass)
+    EXPORT: none
+    ASSERTION: 
+    ALGORITHM: 
+				objAdd(String) := ""
+				addHouseObjects(inHouse)
+				addArmyObjects(inArmy)
+				objAdd = ""The objects have been added to their respective array"
+				output objAdd
+			END SUBMODULE
+			
+SUBMODULE: addHouseObjects
+    IMPORT: 
+    EXPORT: 
+    ASSERTION:  
+    ALGORITHM:  i(Integer) := 0
+				IF inHouse IS NOT NULL AND houseCount IS LESS THAN ARRAYLENGTH THEN
+					INCREMENT houseCount BY 1
+					INCREMENT i BY 1
+				END IF
+				
+				IF i IS EQUAL TO ARRAYLENGTH THEN
+					THROW EXCEPTION "ARRAY IS FULL!"
+				ELSE
+					houseArray[i] := inHouse
+				END IF
+			END SUBMODULE
+			
+SUBMODULE: addArmyObjects
+    IMPORT: 
+    EXPORT: 
+    ASSERTION:  
+    ALGORITHM:	i(Integer) := 0
+				IF inArmy IS NOT NULL AND armyCount IS LESS THAN ARRAYLENGTH THEN
+					INCREMENT armyCount BY 1
+					INCREMENT i BY 1
+				END IF
+				
+				IF i IS EQUAL TO ARRAYLENGTH THEN
+					THROW EXCEPTION "ARRAY IS FULL!"
+				ELSE
+					armyArray[i] := inArmy
+				END IF
+			END SUBMODULE
+				
+SUBMODULE: allianceBattleStrength
+    IMPORT: 
+    EXPORT: 
+    ASSERTION:  
+    ALGORITHM:	allianceStrength(String)
+				WHILE inHouse IS NOT NULL AND houseCount IS LESS THAN ARRAYLENGTH THEN
+					battleStrength()
+					INCREMENT houseCount BY 1
+				END WHILE
+				
+				WHILE inArmy IS NOT NULL AND armyCount IS LESS THAN ARRAYLENGTH THEN
+					battleStrength()
+					INCREMENT armyCount BY 1
+				END WHILE
+				
+				return allianceStrength
+			END SUBMODULE
+				
+SUBMODULE: kingdomBattleStrength
+    IMPORT: 
+    EXPORT: 
+    ASSERTION:  
+    ALGORITHM:	kingdomStrength(String)
+				WHILE inHouse IS NOT NULL AND houseCount IS LESS THAN ARRAYLENGTH THEN
+					kingdomBattleStrength()
+					INCREMENT houseCount BY 1
+				END WHILE
+				
+				WHILE inArmy IS NOT NULL AND armyCount IS LESS THAN ARRAYLENGTH THEN
+					kingdomBattleStrength()
+					INCREMENT armyCount BY 1
+				END WHILE
+				
+				return kingdomStrength
+			END SUBMODULE
+			
+SUBMODULE: findDuplicates
+    IMPORT: 
+    EXPORT: 
+    ASSERTION:  
+    ALGORITHM:	similarity (String)
+				FOR i := 0 TO ARRAYLENGTH CHANGEBY 1 DO
+					FOR j := i +1 TO ARRAYLENGTH CHANGEBY 1 DO
+						IF houseArray[i] EQUALS houseArray[j] THEN
+							similarity := "They are duplicates of each other"
+						ELSE
+							similarity = "They are NOT duplicates of each other"
+						END IF
+					END FOR
+				return similarity
+			END SUBMODULE
+			
+SUBMODULE: compareKingdoms
+    IMPORT: 
+    EXPORT: 
+    ASSERTION:  
+    ALGORITHM:
+			readFile()
+			CONSTRUCT OBJECT FROM NEW FILE
+			FILL OBJECT IN OBJECT ARRAY
+			EQUATE EXISTING KINGDOM OBJECT WITH NEW KINGDOM OBJECT
+			IF kingdomObj EQUALS newKingdomObj THEN
+				foundInfo := "found"
+			ELSE
+				foundInfo := "Not found"
+			return foundInfo
+		END SUBMODULE
+		
+SUBMODULE: viewAlliance
+    IMPORT: 
+    EXPORT: 
+    ASSERTION:  
+    ALGORITHM:	houseInfo(String):= ""
+				armyInfo(String) := ""
+				combinedInfo(String) := ""
+				FOR i := 0 TO ARRAYLENGTH CHANGEBY 1 DO
+					houseInfo:== houseArray[i].toString()
+					armyInfo := armyArray[i].toString()
+					combinedInfo := houseInfo + armyInfo
+				END FOR
+				return combinedInfo
+		END SUBMODULE
+
+SUBMODULE: viewAlliancePopulation
+    IMPORT: 
+    EXPORT: 
+    ASSERTION:  
+    ALGORITHM:	housePopulation(String) := " "
+				armyPopulation(String)  := " "
+				combinedPopulation(String) := " "
+				
+				FOR i := 0 TO ARRAYLENGTH CHANGEBY 1 DO
+					housePopulation := houseArray[i].population()
+					armyPopulation := armyArray[i].population()
+					combinedPopulation := housePopulation + armyPopulation
+				END FOR
+				return combinedPopulation
+			END SUBMODULE
+			
+SUBMODULE: updateAlliance
+    IMPORT: Kingdom object, fileName
+    EXPORT: 
+    ASSERTION:  
+    ALGORITHM:  foundInfo(String) := " "
+				FOR i := 0 TO ARRAYLENGTH CHANGEBY 1 DO
+					IF houseArray[i] EQUALS inName THEN
+						foundInfo = "Found"
+					ELSE
+						foundInfo = "Not found"
+				ENDFOR
+				return foundInfo;
+			END SUBMODULE
+			
+SUBMODULE: loadAlliance
+    IMPORT: 
+    EXPORT: 
+    ASSERTION:  
+    ALGORITHM:  readFile()
+				lineArrayValidation()
+				splitLineArray()
+			END SUBMODULE
+
+SUBMODULE: saveAlliance
+    IMPORT: Kingdom object, fileOutputName, houseArray[],armyArray[]
+    EXPORT: 
+    ASSERTION:  
+    ALGORITHM:  writeFile(); 
+			END SUBMODULE
+
+SUBMODULE: equals
+    IMPORT: 
+    EXPORT: 
+    ASSERTION:  
+    ALGORITHM:	same(boolean) := true
+				IF LENGTH OF houseArray EQUALS armyArray THEN
+					FOR i EQUALS ZERO TO ARRAYLENGTH CHANGEBY 1 DO
+						IF houseArray[i] DOES NOT EQUAL armyArray[i]
+							same := false
+						ENDIF
+					ENDFOR
+				ENDIF
+				return same
+			END SUBMODULE
+			
+SUBMODULE: population
+    IMPORT: 
+    EXPORT: 
+    ASSERTION:  
+    ALGORITHM:	message(String)
+				return message
+			END SUBMODULE
+
+SUBMODULE: getHouseCount
+    IMPORT: 
+    EXPORT: 
+    ASSERTION:  
+    ALGORITHM: output houseCount
+			END SUBMODULE
+
+SUBMODULE: getArmyCount
+    IMPORT: 
+    EXPORT: 
+    ASSERTION:  
+    ALGORITHM:  output ArmyCount
+			END SUBMODULE

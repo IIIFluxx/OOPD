@@ -1,0 +1,136 @@
+CLASS: FileManager
+
+						
+CLASS FIELDS: 	lineArray(String)
+
+			
+SUBMODULE: readFile
+    IMPORT: fileName(String)
+    EXPORT: 
+    ASSERTION: 
+    ALGORITHM: 
+			fileStrm (FileInputStream object) := NULL
+			rdr (InputStreamReader object)
+			bufRdr (BufferedReader object)
+			lineNum (Integer)
+			line (String)
+			TRY THE FOLLOWING
+				fileStrm := new FileInputStream()
+				rdr := new InputStreamReader(fileStrm)
+				bufRdr := new BufferedReader(rdr)
+				lineNum := 0
+				line := bufRdr.readLine()
+				WHILE line DOES NOT EQUAL NULL DO 
+					processLine(line,lineArray[])
+					line := bufRdr.readLine()
+					lineNum++
+				ENDWHILE
+				close fileStrm()
+			END TRY
+			
+			CATCH AN IOException e 
+				IF fileStrm DOES NOT EQUAL NULL  
+					TRY
+						fileStrm.close() 
+					CATCH IOException ex2 { } 
+					END TRY
+				END IF
+			END CATCH
+		END SUBMODULE
+	
+	
+SUBMODULE: lineArrayValidation
+    IMPORT: line(String)
+    EXPORT: 
+    ASSERTION: 
+    ALGORITHM:
+			CREATE OBJECT IllegalArgumentException e := new IllegalArgumentException("Invalid length") 
+			TRY
+				lineArray[] = line.split(",") 
+				IF LENGTH OF lineArray DOES NOT EQUAL 8 OR 9
+					THROW e
+				END IF
+				IF LENGTH OF lineArray[0] DOES NOT EQUAL 1
+					THROW e
+				IF lineArray[0] DOES NOT EQUAL 'H' OR 'A'
+								throw e 
+				END IF
+			END TRY
+			CATCH IllegalArgumentException e { }
+		END SUBMODULE
+	
+	
+	
+
+SUBMODULE: splitLineArray
+    IMPORT:
+    EXPORT: 
+    ASSERTION: 
+    ALGORITHM:	type(Character) := CHARACTER AT lineArray[0]
+				sigil(String) := bannerClass.validateSigil(lineArray[3])
+				sigilColour(String) := bannerClass.validateSigilColor((Parse into integer)lineArray[4])
+				bannerColor(String) := bannerClass.validateBannerColor(lineArray[5])
+				bannerObj(BannerClass) = MAKE NEW BannerClass(sigil, bannerColour, sigilColour)
+				
+		CASE type OF 
+			H:
+
+				name = House.validateName(lineArray[1])
+				years = House.validateYears((Make into Integer)(lineArray[2]))
+				bannermen = House.validateBannermen(lineArray[6]) 
+				castle = House.validateCastle(lineArray[7]) 
+				House houseObj = MAKE NEW House(name, years, bannermen, castle) 
+				Kingdom.addHouseObjects(houseObj) 
+
+			A:
+
+				name = ArmyClass.validateName(lineArray[1]) 
+				years = ArmyClass.validateYears((int)(lineArray[2])) 
+				footmen = ArmyClass.validateFootmen(lineArray[6]) 
+				archers = ArmyClass.validateArchers(lineArray[7]) 
+				history = ArmyClass.validateHistory(lineArray[8]) 
+				ArmyClass armyObj = MAKE NEW ArmyClass(name, years, footmen, archers, history) 
+				Kingdom.addArmyObjects(armyObj)
+				
+			default:
+			
+				THROW NEW IllegalArgumentException("Invalid type")
+		END CASE
+		
+		CATCH IllegalArgumentException e
+			UserInterface.showError(getMessage())
+		END CATCH
+	END SUBMODULE
+---------------------
+
+SUBMODULE: writeFile
+    IMPORT: fileOutputName(String), houseArray(House), armyArray(ArmyClass)
+    EXPORT: 
+    ASSERTION: 
+    ALGORITHM:
+
+			
+		fileStrm(FileOutputStream object) := NULL
+		pw(PrintWriter object)
+		TRY
+		{
+			fileStrm = new FileOutputStream(fileOutputName) 
+			pw = new PrintWriter(fileStrm) 
+
+			IF type EQUALS 'H' THEN
+				pw.OUTPUT House array elements  
+			END IF
+			IF type EQUALS 'A' THEN
+				pw.OUTPUT ArmyClass array elements 
+			ENDIF
+			Close pw
+		END TRY
+		CATCH IOException e 
+			IF fileStrm DOES NOT EQUAL NULL
+				TRY fileStrm.close()
+				CATCH IOException ex2 { }
+			END IF
+		END CATCH
+		OUTPUT ERROR MESSAGE	
+	END SUBMODULE
+}

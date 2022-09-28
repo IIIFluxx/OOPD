@@ -1,0 +1,175 @@
+CLASS: ArmyClass
+
+PUBLIC CLASS CONSTANTS: minyears := 1
+                        maxyears := 10000
+						minfootmen := 3.5
+						maxfootmen := 160.5
+						minarchers := 1.5
+						maxarchers := 112.5
+						
+CLASS FIELDS: name (String)
+              years (Integer)
+              footmen (Double)
+              archers (Double)
+			  history (String)
+			  banner (BannerClass)
+
+CONSTRUCTORS:    
+Default:
+    IMPORT: none
+    EXPORT: none
+    ASSERTION:
+    ALGORITHM:  name := "Archer"
+                years := 2
+                footmen := 4.5
+				archers := 2.5
+                history := ""
+				banner := make new BannerClass
+
+Alternate #1:
+    IMPORT: inName(String), inYears(Integer), inFootmen(Double), inArchers(Double), inHistory(String), inBanner(BannerClass)
+    EXPORT: none
+    ASSERTION: 
+    ALGORITHM:
+				IF (validateYears <- inYears) AND (validateFootmen) AND (validateArchers) THEN
+					name <- inName
+					years <- inYears
+					footmen <- inFootmen
+					archers <- inArchers
+					history <- inHistory
+					banner <- inBanner
+				ELSE
+					FAIL
+				END IF				
+
+Copy:
+    IMPORT: inArmyClass (ArmyClass)
+    EXPORT: address of new Army class object
+    ASSERTION: Creates an object with an identical object state as the import.
+    ALGORITHM:	name := inArmyClass.getName <- none
+				years := inArmyClass.getYears <- none
+				footmen := inArmyClass.getFootmen <- none
+				archers := inArmyClass.getArchers <- none
+				history := inArmyClass.getHistory <- none
+				
+        
+                
+MUTATORS:
+SUBMODULE: setName
+    IMPORT: inName (String)
+    EXPORT: none
+    ASSERTION: sets the name to inName
+    ALGORITHM: name := inName
+
+SUBMODULE: setYears
+    IMPORT: inYears (Integer)
+    EXPORT: none
+    ASSERTION: Sets the year if imports are valid, otherwise, fails. 
+    ALGORITHM:  IF (validateYears <- inYears) THEN
+					years := inYears
+				ELSE
+					FAIL
+				ENDIF
+				
+SUBMODULE: setFootmen
+    IMPORT: inFootmen (Double)
+    EXPORT: 
+    ASSERTION: sets the number of footmen if imports are valid, otherwise, fails. 
+    ALGORITHM:	IF (validateFootmen <- inFootmen) THEN
+					footmen := inFootmen
+				ELSE
+					FAIL
+				ENDIF
+				
+SUBMODULE: setArchers
+    IMPORT: inArchers (Double)
+    EXPORT: 
+    ASSERTION: sets the number of archers if imports are valid, otherwise, fails. 
+    ALGORITHM:	IF (validateArchers <- inArchers) THEN
+					archers := inArchers
+				ELSE
+					FAIL
+				ENDIF
+
+SUBMODULE: setHistory
+    IMPORT: inHistory(String)
+    EXPORT: none
+    ASSERTION: sets the description of the History.
+    ALGORITHM: history := inHistory
+
+SUBMODULE: clone
+    IMPORT: none
+    EXPORT: cloneArmyClass object
+    ASSERTION: Makes a copy of the ArmyClass object.
+    ALGORITHM:  CONSTRUCT NEW ArmyClass object := cloneArmyClass
+
+ACCESSORS: /* Returns a COPY of the information*/   
+SUBMODULE: getName
+    IMPORT: none
+    EXPORT: name
+	ALGORITHM: export copy of name
+    
+SUBMODULE: getYears
+    IMPORT: none
+    EXPORT: years
+	ALGORITHM: export copy of years
+    
+SUBMODULE: getFootmen
+    IMPORT: none
+    EXPORT: footmen
+	ALGORITHM: export copy of footmen
+
+SUBMODULE: getArchers
+    IMPORT: none
+    EXPORT: archers
+	ALGORITHM: export copy of archers
+    
+SUBMODULE: getHistory
+    IMPORT: none
+    EXPORT: history
+	ALGORITHM: export copy of history
+
+
+SUBMODULE: equals
+	IMPORT: inObj (check to ensure if House object)
+	EXPORT: isEqual (boolean)
+		isEqual := false
+		IF inObj is really an ArmyClass THEN
+			make inObj to an ArmyClass named inArmy	
+		IF name same as inName.getName <-- none THEN
+			IF years same as inYears <-- none THEN
+				IF footmen same as inFootmen <-- none THEN
+					IF archers same as inArchers <-- none THEN
+						IF history same as inHistory <-- none THEN
+							isEqual = true
+
+SUBMODULE toString
+	IMPORT: none
+	EXPORT: armyClassString
+	ASSERTION:
+	ALGORITHM: armyClassString = "The Army of " + name + "has existed for " + years + " years. This Army has "
+								+ footmen + " groups of footmen and " + archers + " squads of archers at its ready." 
+								+ " The history of this Army is that " + history + ". "
+	
+                
+PRIVATE SUBMODULES:
+SUBMODULE: validateYears
+    IMPORT: inYears(Integer)
+    EXPORT: valid (boolean)
+    ASSERTION: Number of years must be between 1 and 10,000 (inclusive)
+    ALGORITHM:  
+				valid := (inYears > minyears) AND (inYears < maxyears)
+
+SUBMODULE: validateFootmen
+    IMPORT: inFootmen(Double)
+    EXPORT: valid (boolean)
+    ASSERTION: Number of groups of footmen must be between 3.5 and 160.5 (inclusive)
+    ALGORITHM: 
+				valid := (inFootmen >= minfootmen) AND (inFootmen <= maxfootmen)
+
+SUBMODULE: validateArchers
+    IMPORT: inArchers(Double)
+    EXPORT: valid (boolean)
+    ASSERTION: Number of squads of archers must be between 1.5 and 112.5 (inclusive)
+    ALGORITHM: 
+				valid := (inArchers >= minarchers) AND (inArchers <= maxarchers)

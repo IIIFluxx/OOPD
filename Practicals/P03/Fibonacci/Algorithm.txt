@@ -1,0 +1,57 @@
+MAIN 
+	max(Integer) := 20
+	fib(ARRAY OF Integer)
+	fib[0] := 0
+	fib[1] := 1
+	
+	DO 
+		OUTPUT "Select an option - one (1) for inputting a number to calculate the Fibonacci sequence leading up to it
+				- two (2) to exit"
+		INPUT response(Integer)
+		
+	WHILE response != 1 || response != 2
+	
+	IF response := 1 THEN	
+		DO
+			OUTPUT "Enter an integer value"
+			INPUT input (Integer)
+		WHILE input < 1 AND input > 20
+		
+		FOR i = 2 TO max CHANGEBY 1 DO
+			fib[i] := fib[i - 1] + fib[i - 2]
+			
+		// print the Fibonacci series numbers		
+		OUTPUT "Fibonacci series: " + answer
+	ELSE 
+		OUTPUT "Exiting program"
+	
+	  
+	  
+	  if (response == 1)
+	  {
+		  do
+		  {
+			  System.out.println("Enter an integer value");
+			  input = sc.nextInt();
+		  }
+		  while((input < 1) && (response > 20));
+	  
+		  for(int i=2; i <input; i++)
+		  {
+			  fib[i] =fib[i-1]+fib[i-2];
+		  }
+		  //print the Fibonacci series numbers
+		  System.out.println("Fibonacci Series up to " + max);
+		  
+		  for(int i=0; i< max; i++)
+		  {
+			  System.out.println(fib[i] + " ");
+		  }
+	  }
+	  else
+	  {
+		  System.out.println("Exiting program..");
+	  }
+	}
+}
+*/

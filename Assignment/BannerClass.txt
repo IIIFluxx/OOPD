@@ -1,0 +1,181 @@
+CLASS: BannerClass
+
+PUBLIC CLASS CONSTANTS: SIGIL1 := "WOLF"
+                        SIGIL2 := "TOTEM"
+						SIGIL3 := "LION"
+						SIGIL4 := "DRAGON"
+						
+CLASS FIELDS: sigil (String)
+              bannerColor (String)
+              sigilColor (String)
+
+CONSTRUCTORS:    
+Default:
+    IMPORT: none
+    EXPORT: address of new BannerClass object
+    ASSERTION: initializes the object containing BannerClass' classfields
+    ALGORITHM:  sigil := "WOLF"
+                bannerColor := FFFFFF
+                sigilColor := FFFFFF
+                CONSTRUCT NEW bannerObj 
+            END SUBMODULE
+
+Alternate Constructor:
+    IMPORT: inSigil(String), inBannerColor(Integer), inSigilColor(String)
+    EXPORT: address of new BannerClass object
+    ASSERTION: Creates the object if imports are valid & FAILS otherwise
+    ALGORITHM: 	    
+                setSigil <- inSigil
+				setBannerColor <- inBannerColor
+				setSigilColor <- inSigilColor
+            END SUBMODULE
+
+Copy:
+    IMPORT: inBannerClass (BannerClass)
+    EXPORT: address of new BannerClass class object
+    ASSERTION: Creates an object with an identical object state as the import.
+    ALGORITHM:	
+                sigil := inBannerClass.getSigil <- none
+				bannerColor := inBannerClass.getBannerColor <- none
+				sigilColor := inBannerClass.getSigilColor <- none
+            END SUBMODULE
+
+MUTATORS:
+SUBMODULE: setSigil
+    IMPORT: inSigil (String)
+    EXPORT: none
+    ASSERTION: Sets sigil to inSigil if imports are valid, otherwise, fails.
+    ALGORITHM:
+				IF (validateSigil <- inSigil) THEN
+					sigil := inSigil
+				ELSE
+					THROW IllegalArgumentException "Invalid sigil name"
+				ENDIF
+			END SUBMODULE
+
+
+SUBMODULE: setBannerColor
+    IMPORT: inBannerColor (String)
+    EXPORT: none
+    ASSERTION: Sets the banner color to inBannerColor if imports are valid,
+				 otherwise, fails.
+    ALGORITHM: 
+				IF (validateColor <- inBannerColor) THEN
+					bannerColor := inBannerColor
+				ELSE
+					THROW IllegalArgumentException "Invalid banner color"
+				ENDIF
+			END SUBMODULE
+				
+SUBMODULE: setSigilColor
+    IMPORT: inSigilColor (String)
+    EXPORT: none
+    ASSERTION: Sets the sigil color to inSigilColor if imports are valid,
+				 otherwise, fails.
+    ALGORITHM: 
+				IF (validateColor <- inSigilColor) THEN
+					sigilColor := inSigilColor
+				ELSE
+					THROW IllegalArgumentException "Invalid sigil color"
+				ENDIF
+			END SUBMODULE
+
+SUBMODULE: clone
+    IMPORT: none
+    EXPORT: new BannerClass object
+    ASSERTION: Creates an BannerClass object that is a copy of the current
+				 BannerClass object
+    ALGORITHM:
+				Export (CONSTRUCT NEW BannerClass object)
+			END SUBMODULE
+
+ACCESSORS: 
+ 
+SUBMODULE: getSigil
+    IMPORT: none
+    EXPORT: returns the classfield - sigil
+	ALGORITHM: 
+				export copy of sigil
+			END SUBMODULE
+			
+SUBMODULE: getBannerColor
+    IMPORT: none
+    EXPORT: bannerColor
+	ALGORITHM: 
+				export copy of bannerColor
+			END SUBMODULE
+			
+SUBMODULE: getSigilColor
+    IMPORT: none
+    EXPORT: sigilColor
+	ALGORITHM: 
+				export copy of sigilColor
+			END SUBMODULE
+
+SUBMODULE: equals
+	IMPORT: inObj(Object)
+	EXPORT: isEqual(boolean)
+	ASSERTION: Checks if each classfield is equal to a identical 
+		   constructed object's classfields
+		   
+		isEqual := false
+		IF inObj is really a BannerClass THEN
+			Make inObj a BannerClass named inBannerClass
+			IF sigil same as inBannerClass.getSigil <-- none THEN 
+				IF bannerColor same as inBannerClass.getBannerColor <-- none THEN
+					IF sigilColor same as inBannerClass.getSigilColor <-- none THEN
+						isEqual := true
+					ENDIF
+				ENDIF
+			ENDIF
+		ENDIF
+	END SUBMODULE
+	
+
+SUBMODULE toString
+	IMPORT: none
+	EXPORT: return string
+	ASSERTION: returns a statement string containing specific classfields
+	ALGORITHM:
+				OUTPUT "NEWLINE The " + bannerColor + " banner consists of a " 
+				+ sigilColor + " sigil in the shape of a " + sigil + ". "
+			END SUBMODULE	
+
+SUBMODULE: toFileString
+	IMPORT: none
+	EXPORT: none
+	ASSERTION: returns a specific statement string in 
+               CSV (comma-separated) format
+	ALGORITHM: 
+			OUTPUT sigil + "," + bannerColor + "," + sigilColor
+		END SUBMODULE
+	
+
+
+PRIVATE SUBMODULES:
+
+SUBMODULE: validateSigil
+	IMPORT: inSigil (String)
+	EXPORT: equality (boolean)
+	ASSERTION: Must be valid sigil name (i.e. TOTEM, LION, DRAGON or WOLF).
+	ALGORITHM:
+				equality := false
+					IF inSigil EQUALS SIGIL1 OR inSigil EQUALS SIGIL2
+					OR inSigil EQUALS SIGIL3 OR inSigil EQUALS SIGIL4 THEN
+						equality := true
+	
+
+SUBMODULE: validateColor
+	IMPORT: inColor (String)
+	EXPORT: valid (boolean)
+	ASSERTION: Must be valid color -- i.e. string length of 6 and hexadecimal.
+	ALGORITHM:
+				valid := false
+				IF length of inColor IS EQUAL TO 6 THEN
+					TRY
+						num := Parse inColor into an Integer of Radix 16
+						valid := true
+					END TRY
+					CATCH NumberFormatException
+				
+			END SUBMODULE

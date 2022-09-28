@@ -1,0 +1,19 @@
+SUBMODULE: divCheck
+IMPORTS: numOne (Integer), numTwo (Integer)
+EXPORTS: solution(String)
+
+BEGIN
+
+// Get input from user for program to work
+    OUTPUT "Please enter an integer - the dividend (number to be divided)
+    INPUT numOne(Integer)
+    OUTPUT "Please enter another integer - the divisor (number that divides into the dividend)"
+    
+    IF the remainder of of the quotient of numOne and numTwo equals zero THEN
+        solution = "Divisible"
+// Check whether order of ifs matter - does it stop when first X happens
+    ELSE IF the remainder of the quotient of numOne and numTwo is more than zero THEN
+        solution = "Not Divisible"
+    ENDIF
+END
+

@@ -1,0 +1,197 @@
+ABSTRACT CLASS: AllianceClass
+
+
+PUBLIC CLASS CONSTANTS: MINYEARS := 1
+						MAXYEARS := 10000
+						
+PRIVATE CLASS FIELDS:
+					name(String)
+					years(Integer)
+					banner(BannerClass) 
+	
+CONSTRUCTORS:
+Default:
+	IMPORT: none
+    EXPORT: none
+    ASSERTION:
+    ALGORITHM:  name := "Archer"
+                years := 2
+				CONSTRUCT banner USING BannerClass' default constructor
+			END SUBMODULE
+				
+Alternate:
+    IMPORT: inName(String), inYears(Integer), inBanner(BannerClass)
+    EXPORT: none
+    ASSERTION: 
+    ALGORITHM:
+			setName <- inName
+			setYears <- inYears
+			setBanner <- inBanner
+		END SUBMODULE
+
+Copy:
+	IMPORT: inAlliance(AllianceClass)
+	EXPORT: address of new Alliance class object
+	ASSERTION: Creates an object with an identical object state as the import.
+	ALGORITHM:
+			name := inAlliance.getName <- none
+			years := inAlliance.getYears <- none
+			banner := inAlliance.getBanner <- none
+		END SUBMODULE
+    
+MUTATORS:
+	SUBMODULE: setName
+	IMPORT: inName (String)
+	EXPORT: none
+	ASSERTION: Sets the name to inName if imported String is valid(not null)
+	ALGORITHM:
+			IF validateName <- inName THEN
+					name := inName
+			ELSE
+				THROW IllegalArgumentException "Invalid name - must not be null"
+			ENDIF
+	END SUBMODULE
+
+SUBMODULE: setYears
+    IMPORT: inYears (Integer)
+    EXPORT: none
+    ASSERTION: Sets the year if imports are valid, otherwise, fails. 
+    ALGORITHM:  
+				IF (validateYears <- inYears) THEN
+					years := inYears
+				ELSE
+					THROW IllegalArgumentException "Invalid number of years"
+				ENDIF
+			END SUBMODULE
+			
+SUBMODULE: setBanner
+    IMPORT: inBanner(BannerClass)
+    EXPORT: none
+    ASSERTION: sets the banner object.
+    ALGORITHM: 
+				IF inBanner IS NULL THEN
+					THROW IllegalArgumentException "Invalid banner"
+				ELSE 
+					CONSTRUCT banner(BannerClass) USING inBanner
+				ENDIF
+			END SUBMODULE
+
+
+
+    ACCESSORS: 
+	SUBMODULE: getName
+    IMPORT: none
+    EXPORT: name(String)
+	ALGORITHM: 
+				export copy of name
+			END SUBMODULE
+			
+			
+	SUBMODULE: getYears
+    IMPORT: none
+    EXPORT: years(Integer)
+	ALGORITHM: 
+				export copy of the number of years
+			END SUBMODULE
+			
+			
+	SUBMODULE: getBanner
+    IMPORT: none
+    EXPORT: new Banner object 
+	ALGORITHM: 
+				export a new banner object
+			END SUBMODULE
+			
+	SUBMODULE: equals
+	IMPORT: inObj (check to ensure if Alliance object)
+	EXPORT: isEqual (boolean)
+			isEqual := false
+			IF inObj is really an Alliance THEN
+				Make inObj an AllianceClass named inAlliance	
+				IF name same as inAlliance.getName <-- none THEN
+					IF years same as inAlliance.inYears <-- none THEN
+						IF banner same as inAlliance.getBanner <- none THEN
+							isEqual := true
+						ENDIF
+					ENDIF
+				ENDIF
+			ENDIF
+		END SUBMODULE
+
+    
+	
+	SUBMODULE toString
+	IMPORT: none
+	EXPORT: return string
+	ASSERTION: returns a statement string containing specific classfields
+	
+	ALGORITHM: 
+				OUTPUT "The Alliance of " + name + "has existed for "
+				+ years + " years. " + banner.toString <- none
+			END SUBMODULE
+	
+	SUBMODULE toFileString
+	IMPORT: none
+	EXPORT: none
+	ASSERTION: returns a specific statement string 
+               in CSV (comma-separated) format
+	ALGORITHM: 
+				OUTPUT name + years + "," + banner.toFileString <- none
+			END SUBMODULE
+
+    
+      
+    
+	SUBMODULE battleStrength
+	IMPORT: none
+	EXPORT: none
+	ASSERTION: This is an abstract method that 
+               calls the respective subclass method
+	ALGORITHM:
+				battleStrength <- none
+			END SUBMODULE
+			
+	SUBMODULE population
+	IMPORT: none
+	EXPORT: none
+	ASSERTION: This is an abstract method that 
+               calls the respective subclass method
+	ALGORITHM:
+				population <- none
+			END SUBMODULE
+			
+	SUBMODULE clone
+	IMPORT: none
+	EXPORT: none
+	ASSERTION: This is an abstract method that calls 
+               the respective subclass method
+	ALGORITHM:
+				clone <- none    
+			END SUBMODULE
+			
+			
+    PRIVATE SUBMODULES:
+	
+	SUBMODULE: validateName
+    IMPORT: inName(String)
+    EXPORT: test (boolean)
+    ASSERTION: Name must be non-empty (not null)
+	ALGORITHM:
+			test := false
+			IF inName is not null THEN
+				test := true
+			ENDIF	
+		END SUBMODULE
+	
+
+SUBMODULE: validateYears
+    IMPORT: inYears(Integer)
+    EXPORT: valid (boolean)
+    ASSERTION: Number of years must be between 1 and 10,000 (inclusive)
+    ALGORITHM:
+			valid := (inYears GREATER THAN OR EQUAL TO MINYEARS
+					  AND inYears LESS THAN OR EQUAL TO MAXYEARS)
+		END SUBMODULE
+
+END CLASS
+		

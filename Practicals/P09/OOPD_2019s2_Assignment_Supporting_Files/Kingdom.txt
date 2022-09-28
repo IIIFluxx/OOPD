@@ -1,0 +1,298 @@
+CLASS: Kingdom
+
+PUBLIC CLASS CONSTANTS: ARRAYLENGTH := 15
+						
+CLASS FIELDS: 	houseArray(House object)
+				armyArray(ArmyClass object)
+                houseCount(Integer)
+                armyCount(Integer)
+
+CONSTRUCTORS:    
+Default:
+    IMPORT: none
+    EXPORT: none
+    ASSERTION:
+    ALGORITHM:  
+				houseArray[](House)
+				armyArray[] (ArmyClass)
+				armyCount := 0
+				houseCount := 0
+			END SUBMODULE
+			
+SUBMODULE: addAlliance
+    IMPORT: none
+    EXPORT: statement(String)
+    ASSERTION: 
+    ALGORITHM: 
+				statement(String) := ""
+				type(Integer)
+                type = CALL UserInterface method getObject()
+                TRY
+                    IF type EQUALS 1 THEN
+                        newHouseObj(House) := CALL UserInterface 
+                                                    method getHouseObject()
+                        addHouseObjects(newHouseObj)
+                        statement := "A new house has been added to Kingdom. "
+				    ENDIF
+                    IF type EQUALS 2 THEN
+                        addArmyObjects(inArmy) := CALL UserInterface method
+                                                            getArmyObject()
+                        addArmyObjects(newArmyObj)
+                        statement := "A new Army has been added to Kingdom. "
+                    ENDIF
+                END TRY
+                CATCH IllegalArgumentException
+                    OUTPUT "Invalid object"
+                END CATCH
+				output statement
+			END SUBMODULE
+			
+SUBMODULE: addHouseObjects
+    IMPORT: newHouseObj(House)
+    EXPORT: none
+    ASSERTION:  
+				IF newHouseObj IS NOT NULL AND houseCount IS LESS THAN ARRAYLENGTH THEN
+					houseArray[houseCount] := newHouseObj
+                    INCREMENT houseCount BY 1
+				ENDIF
+                IF newHouseObj IS NULL
+                    THROW IllegalArgumentException
+                ENDIF
+                IF houseCount IS GREATHER THAN ARRAYLENGTH
+				    THROW IllegalArgumentException
+                ENDIF 
+			END SUBMODULE
+			
+SUBMODULE: addArmyObjects
+    IMPORT: newArmyObj(ArmyClass)
+    EXPORT: 
+    ASSERTION:  
+				IF newArmyObj IS NOT NULL AND armyCount IS LESS THAN ARRAYLENGTH THEN
+					armyArray[armyCount] := newArmyObj
+                    INCREMENT armyCount BY 1
+				END IF
+				
+                IF newArmyObj IS NULL
+                    THROW IllegalArgumentException
+                END IF 
+				IF armyCount IS GREATER THAN ARRAYLENGTH THEN
+					THROW IllegalArgumentException
+				END IF
+			END SUBMODULE
+				
+SUBMODULE: allianceBattleStrength
+    IMPORT: none
+    EXPORT: statement(String)
+    ASSERTION:
+    ALGORITHM:	
+                statement(String) := ""
+                bestAlliance(String) := ""
+                FOR i := 0 TO houseCount CHANGEBY 1 DO
+                    tempStrength := houseArray[i].battleStrength()
+                    IF tempStrength IS GREATER THAN battleStrength
+                        battleStrength := tempStrength
+                        bestAlliance := houseArray[i].getName()
+                    ENDIF
+                END FOR
+                FOR i := 0 TO armyCount CHANGEBY 1 DO
+                    tempStrength := armyArray[i].battleStrength()
+                    IF tempStrength IS GREATER THAN battleStrength
+                        battleStrength := tempStrength
+                        bestAlliance := armyArray[i].getName()
+                    ENDIF
+                END FOR
+			statement := "The strongest alliance " + bestAlliance + 
+                            has a strength of " + battleStrength
+            return statement // returns string from method
+            END SUBMODULE
+				
+SUBMODULE: kingdomBattleStrength
+    IMPORT: 
+    EXPORT: kingdomStrength(Integer)
+    ASSERTION:  
+    ALGORITHM:	
+            FOR i := 0 TO houseCount CHANGEBY 1 DO
+                tempStrength := tempStrength + houseArray[i].battleStrength()
+            END FOR
+            FOR i := 0 TO armyCount CHANGEBY 1 DO
+                tempStrength := tempStrength + armyArray[i].battleStrength()
+			END FOR
+            OUTPUT "The kingdmo has a battle strength of " + tempStrength
+
+        END SUBMODULE
+			
+SUBMODULE: findDuplicates
+    IMPORT: 
+    EXPORT: 
+    ASSERTION:  
+    ALGORITHM:	similarity (String)
+				FOR i := 0 TO ARRAYLENGTH CHANGEBY 1 DO
+					FOR j := i +1 TO ARRAYLENGTH CHANGEBY 1 DO
+						IF houseArray[i] EQUALS houseArray[j] THEN
+							similarity := "They are duplicates of each other"
+						ELSE
+							similarity = "They are NOT duplicates of each other"
+						END IF
+					END FOR
+                    
+					FOR j := i +1 TO ARRAYLENGTH CHANGEBY 1 DO
+						IF armyArray[i] EQUALS armyArray[j] THEN
+							similarity := "They are duplicates of each other"
+						ELSE
+                            similarity = "They are NOT duplicates of each other"
+				        END IF
+                    END FOR
+                    return similarity
+			END SUBMODULE
+			
+SUBMODULE: compareKingdoms
+    IMPORT: 
+    EXPORT: 
+    ASSERTION:  
+    ALGORITHM:
+			readFile()
+			CONSTRUCT OBJECT FROM NEW FILE
+			FILL OBJECT IN OBJECT ARRAY
+			EQUATE EXISTING KINGDOM OBJECT WITH NEW KINGDOM OBJECT
+			IF kingdomObj EQUALS newKingdomObj THEN
+				foundInfo := "found"
+			ELSE
+				foundInfo := "Not found"
+			return foundInfo
+		END SUBMODULE
+		
+SUBMODULE: viewAlliance
+    IMPORT: 
+    EXPORT: 
+    ASSERTION:  
+    ALGORITHM:	houseInfo(String):= ""
+				armyInfo(String) := ""
+				combinedInfo(String) := ""
+				FOR i := 0 TO houseCount CHANGEBY 1 DO
+                    houseInfo:== houseArray[i].toString()
+				ENDFOR
+                
+                FOR i := 0 to armyCount CHANGEBY 1 DO
+                    	armyInfo := armyArray[i].toString()
+                END FOR
+                combinedInfo := houseInfo + armyInfo
+		
+				return combinedInfo
+		END SUBMODULE
+
+SUBMODULE: viewAlliancePopulation
+    IMPORT: 
+    EXPORT: 
+    ASSERTION:  
+    ALGORITHM:	housePopulation(String) := " "
+				armyPopulation(String)  := " "
+				combinedPopulation(String) := " "
+				
+				FOR i := 0 TO houseCount CHANGEBY 1 DO
+                    housePopulation := houseArray[i].population()
+                END FOR 
+				
+                FOR i := 0 TO armyCount CHANGEBY 1 DO
+                    armyPopulation := armyArray[i].population()
+                END FOR
+
+				combinedPopulation := housePopulation + armyPopulation
+				return combinedPopulation
+			END SUBMODULE
+			
+SUBMODULE: updateAlliance
+    IMPORT: Kingdom object, fileName
+    EXPORT: 
+    ASSERTION:  
+    ALGORITHM:  foundInfo(String) := " "
+				allianceName(String) = CALL UserInterface method getAllianceName()
+                FOR i := 0 TO houseCount CHANGEBY 1 DO
+					IF houseArray[i].getName() EQUALS allianceName THEN
+						foundInfo = "Found"
+					ELSE
+						foundInfo = "Not found"
+				ENDFOR
+                
+                FOR i := 0 TO armyCount CHANGEBY 1 DO
+					IF armyArray[i].getName() EQUALS allianceName THEN
+						foundInfo = "Found"
+					ELSE
+						foundInfo = "Not found"
+				ENDFOR  
+				return foundInfo;
+			END SUBMODULE
+			
+SUBMODULE: loadAlliance
+    IMPORT: 
+    EXPORT: 
+    ASSERTION:  
+	ALGORITHM:
+                fileName(String) := CALL UserInterface method getFileName()
+                CALL FileManager method readFile(fileName, Kingdom object)
+            END SUBMODULE
+
+SUBMODULE: saveAlliance
+    IMPORT: Kingdom object, fileOutputName, houseArray[],armyArray[]
+    EXPORT: 
+    ASSERTION:  
+    ALGORITHM:  
+                fileOutputName(String) := CALL UserInterface method getAllianceName()
+                CALL FileManager method writeFile(fileOutputName, Kingdom object)
+                return "Alliance has been saved"
+			END SUBMODULE
+
+SUBMODULE: equals
+    IMPORT: inObject(Object)
+    EXPORT: 
+    ASSERTION:  
+    ALGORITHM:	same(boolean) := true
+				IF inObject is an instance of Kingdom 
+                    inObject := (Kingdom)inObject
+                    Get classfields using getters 
+                    
+                    IF inHouseCount DOES NOT EQUAL houseCount
+                        same := false
+                    ELSE
+                        FOR int i:= 0 TO ARRAYLENGTH CHANGEBY 1 D0
+                            IF inHouseArray[i] EQUALS houseArray[i]
+                                same := false
+                            ENDIF
+                        END FOR
+                    END IF
+                    
+                    IF inArmyCount DOES NOT EQUAL armyCount
+                        same := false
+                    ELSE
+                        FOR int i:= 0 TO ARRAYLENGTH CHANGEBY 1 D0
+                            IF inArmyArray[i] EQUALS armyArray[i]
+                                same := false
+                            ENDIF
+                        END FOR
+                    END IF
+                ELSE
+                    same := false
+                END IF
+				return same
+			END SUBMODULE
+			
+SUBMODULE: population
+    IMPORT: 
+    EXPORT: 
+    ASSERTION:  
+    ALGORITHM:	message(String)
+				return message
+			END SUBMODULE
+
+SUBMODULE: getHouseCount
+    IMPORT: 
+    EXPORT: 
+    ASSERTION:  
+    ALGORITHM: output houseCount
+			END SUBMODULE
+
+SUBMODULE: getArmyCount
+    IMPORT: 
+    EXPORT: 
+    ASSERTION:  
+    ALGORITHM:  output ArmyCount
+			END SUBMODULE

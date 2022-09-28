@@ -1,0 +1,194 @@
+CLASS: ArmyClass
+
+PUBLIC CLASS CONSTANTS: 
+						MINFOOTMEN := 3.5
+						MAXFOOTMEN := 160.5
+						MINARCHERS := 1.5
+						MAXARCHERS := 112.5
+						
+CLASS FIELDS: 
+              footmen (Double)
+              archers (Double)
+			  history (String)
+			  
+CONSTRUCTORS:    
+Default:
+    IMPORT: none
+    EXPORT: none
+    ASSERTION:
+    ALGORITHM:  footmen := 4.5
+				archers := 2.5
+                history := ""
+			END SUBMODULE
+			
+				
+Alternate:
+    IMPORT: inName(String), inYears(Integer), inBanner(BannerClass), inFootmen(Double), inArchers(Double), inHistory(String)
+    EXPORT: none
+    ASSERTION: 
+    ALGORITHM:
+				super <- inName, inYears, inBanner
+				setFootmen <- inFootmen
+				setArchers <- inArchers
+				setHistory <- inHistory
+			END SUBMODULE
+
+Copy:
+    IMPORT: inArmyClass (ArmyClass)
+    EXPORT: address of new Army class object
+    ASSERTION: Creates an object with an identical object state as the import.
+    ALGORITHM:	
+				super <- inArmyClass
+				footmen := inArmyClass.getFootmen <- none
+				archers := inArmyClass.getArchers <- none
+				history := inArmyClass.getHistory <- none
+			END SUBMODULE
+        
+                
+MUTATORS:
+				
+SUBMODULE: setFootmen
+    IMPORT: inFootmen (Double)
+    EXPORT: 
+    ASSERTION: sets the number of footmen if imports are valid, otherwise, fails. 
+    ALGORITHM:	IF (validateFootmen <- inFootmen) THEN
+					footmen := inFootmen
+				ELSE
+					THROW IllegalArgumentException "Invalid number of footmen"
+				ENDIF
+			END SUBMODULE
+			
+SUBMODULE: setArchers
+    IMPORT: inArchers (Double)
+    EXPORT: 
+    ASSERTION: sets the number of archers if imports are valid, otherwise, fails. 
+    ALGORITHM:	IF (validateArchers <- inArchers) THEN
+					archers := inArchers
+				ELSE
+					THROW IllegalArgumentException "Invalid number of squads of archers"
+				ENDIF
+			END SUBMODULE
+			
+			
+SUBMODULE: setHistory
+    IMPORT: inHistory(String)
+    EXPORT: none
+    ASSERTION: sets the description of the History.
+    ALGORITHM: 
+				IF validateHistory <- inHistory THEN
+					history := inHistory
+				ELSE
+					THROW IllegalArgumentException "Invalid history description - must not be null"
+				ENDIF
+			END SUBMODULE
+
+SUBMODULE: clone
+    IMPORT: none
+    EXPORT: cloneArmyClass object
+    ASSERTION: Makes a copy of the ArmyClass object.
+    ALGORITHM:  Export (CONSTRUCT NEW ArmyClass object)
+			END SUBMODULE
+	
+ACCESSORS: /* Returns a COPY of the information*/    
+    
+SUBMODULE: getFootmen
+    IMPORT: none
+    EXPORT: footmen
+	ALGORITHM: export copy of footmen
+	END SUBMODULE
+
+SUBMODULE: getArchers
+    IMPORT: none
+    EXPORT: archers
+	ALGORITHM: export copy of archers
+	END SUBMODULE
+    
+SUBMODULE: getHistory
+    IMPORT: none
+    EXPORT: history
+	ALGORITHM: export copy of history
+	END SUBMODULE
+
+SUBMODULE: equals
+	IMPORT: inObj (check to ensure if House object)
+	EXPORT: isEqual (boolean)
+		isEqual := false
+		IF inObj is really an ArmyClass THEN
+			make inObj to an ArmyClass named inArmyClass
+			IF superclass classfields same as inArmyClass THEN
+				IF footmen same as inArmyClass.inFootmen <-- none THEN
+					IF archers same as inArmyClass.inArchers <-- none THEN
+						IF history same as inArmyClass.inHistory <-- none THEN
+							isEqual = true
+						ENDIF
+					ENDIF
+				ENDIF
+			ENDIF
+		ENDIF
+		END SUBMODULE
+
+SUBMODULE toString
+	IMPORT: none
+	EXPORT: none
+	ASSERTION:
+	ALGORITHM: 
+				OUTPUT super.toString <- none + "This Army has " + footmen + " groups of footmen and " + archers + " squads of archers at its ready." 
+				+ " The history of this Army is that " + history + ". ")
+			END SUBMODULE
+
+SUBMODULE toFileString
+	IMPORT: none
+	EXPORT: none
+	ASSERTION:
+	ALGORITHM: OUTPUT "A," + super.toFileString <- none + "," + footmen + "," + archers
+				+ "," + history
+	END SUBMODULE
+	
+SUBMODULE population
+	IMPORT: none
+	EXPORT: none
+	ASSERTION:
+	ALGORITHM: 
+			population(Integer) := 0
+			sum (Double) := 0
+			sum := archers + 450.0 + footmen * 120.0
+			OUTPUT "The Army of " + super.getName <- none  + " consists of " + population + " people. " + NEWLINE 
+		END SUBMODULE
+
+SUBMODULE battleStrength
+	IMPORT: none
+	EXPORT: strength(Integer)
+	ASSERTION:
+	ALGORITHM: 
+			strength(Integer) := 0
+			strength := (Convert to integer)((footmen * 50.0) + (archers *14.0))
+		END SUBMODULE
+
+                
+PRIVATE SUBMODULES:
+
+SUBMODULE: validateHistory
+    IMPORT: inHistory(String)
+    EXPORT: test (boolean)
+    ASSERTION: History description must be non-empty (not null)
+	ALGORITHM:
+		test(boolean) := false
+		IF inHistory is not null THEN
+			test := true
+		ENDIF	
+	END SUBMODULE
+
+
+SUBMODULE: validateFootmen
+    IMPORT: inFootmen(Double)
+    EXPORT: valid (boolean)
+    ASSERTION: Number of groups of footmen must be between 3.5 and 160.5 (inclusive)
+    ALGORITHM: 
+				valid := (inFootmen >= MINFOOTMEN) AND (inFootmen <= MAXFOOTMEN)
+
+SUBMODULE: validateArchers
+    IMPORT: inArchers(Double)
+    EXPORT: valid (boolean)
+    ASSERTION: Number of squads of archers must be between 1.5 and 112.5 (inclusive)
+    ALGORITHM: 
+				valid := (inArchers >= MINARCHERS) AND (inArchers <= MAXARCHERS

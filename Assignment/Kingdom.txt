@@ -1,0 +1,244 @@
+CLASS: Kingdom
+
+PUBLIC CLASS CONSTANTS: ARRAYLENGTH := 30
+						
+CLASS FIELDS: 	allianceArray(AllianceClass[] object)
+				allianceCount(Integer)
+
+CONSTRUCTORS:    
+Default:
+    IMPORT: none
+    EXPORT: none
+    PURPOSE: Initialises the length of the alliance array 
+			   at use in this class.
+    ALGORITHM:  
+				allianceArray[ARRAYLENGTH]
+				allianceCount := 0
+			END SUBMODULE
+			
+SUBMODULE: addAlliance
+	IMPORT: none
+	EXPORT: statement(String)
+	PURPOSE: Creates a new Alliance object based off user input,
+				and calls the addNewAlliance method to add the returned
+				object to the Alliance array (classfield)
+	ALGORITHM:
+				statement := ""
+				type := CALL UserInterface method getObject <- none
+                TRY
+                    IF type EQUALS 1 THEN
+                        newAllianceObj := CALL UserInterface method 
+                                               getHouseObject <- none
+                        addNewAlliance <- newAllianceObj
+                        statement := "A new alliance has been added! "
+				    ENDIF
+                    IF type EQUALS 2 THEN
+                        newAllianceObj := CALL UserInterface method 
+                                               getArmyObject <- none
+						addNewAlliance <- newAllianceObj
+                        statement := "A new alliance has been added! "
+                    ENDIF
+                END TRY
+                CATCH IllegalArgumentException
+                    OUTPUT "Invalid object"
+                END CATCH
+			END SUBMODULE
+			
+SUBMODULE: addNewAlliance
+    IMPORT: newAllianceObj(AllianceClass)
+    EXPORT: none
+    ASSERTION: Adds the imported object to the allianceArray (classfield) 
+				 if and only if the object valid is valid and there is space
+				 left in the allianceArray.
+	ALGORITHM:
+				IF newAllianceObj IS NOT NULL AND 
+                   allianceCount IS LESS THAN ARRAYLENGTH THEN
+					allianceArray[allianceCount] := newAllianceObj
+                    INCREMENT allianceCount BY 1
+				ENDIF
+                IF newAllianceObj IS NULL
+                    THROW IllegalArgumentException "Object is null"
+                ENDIF
+                IF allianceCount IS GREATHER THAN ARRAYLENGTH
+				    THROW IllegalArgumentException "End of array - now full"
+                ENDIF
+			END SUBMODULE
+			
+
+				
+SUBMODULE: allianceBattleStrength
+    IMPORT: none
+    EXPORT: statement(String)
+    PURPOSE: Find the strongest alliance and alert the user.
+    ALGORITHM:
+                statement := ""
+                FOR i := 0 TO allianceCount CHANGEBY 1 DO
+                    tempStrength := allianceArray[i].battleStrength <- none
+                    IF tempStrength IS GREATER THAN battleStrength
+                        battleStrength := tempStrength
+                        bestAlliance := allianceArray[i].getName <- none
+                    ENDIF
+                END FOR
+				statement := "The strongest alliance " + bestAlliance + 
+                            has a strength of " + battleStrength + NEWLINE
+			END SUBMODULE
+				
+SUBMODULE: kingdomBattleStrength
+    IMPORT: none
+    EXPORT: statement(String)
+    PURPOSE: Find the strongest alliance and alert the user.
+    ALGORITHM:
+				statement := ""
+				FOR i := 0 TO allianceCount CHANGEBY 1 DO
+					tempStrength := tempStrength + 
+                                    allianceArray[i].battleStrength <- none
+				END FOR
+				OUTPUT "The kingdom has a battle strength of " + tempStrength
+        END SUBMODULE
+			
+SUBMODULE: findDuplicates
+	PURPOSE: checks if there are any duplicates within the allianceArray, 
+			 and alerts the user whether there are any or not.
+    IMPORTS: none
+    EXPORTS: similarity(String) 
+    ALGORITHM:
+				similarity := ""
+				FOR i := 0 TO allianceCount CHANGEBY 1 DO
+					FOR j := i +1 TO allianceCount CHANGEBY 1 DO
+						IF allianceCount[i] EQUALS allianceCount[j] THEN
+							similarity := similarity + "Alliance " 
+							+ (i+1) + " and " + (j+1) 
+							+ "are the same " + NEWLINE
+						END IF
+					END FOR
+				END FOR
+			END SUBMODULE
+			
+SUBMODULE: compareKingdoms
+    IMPORT: none
+    EXPORT: foundInfo(String)
+    PURPOSE: Checks whether two kingdoms contain exactly same classfields
+			 and alerts the user if so.  
+    ALGORITHM:
+			foundInfo := ""
+			CONSTRUCT newKingdomObj USING default
+			newKingdomObj.loadAlliance <- none
+			IF kingdom EQUALS newKingdomObj THEN
+				foundInfo := "The kingdoms are the same"
+			ELSE
+				foundInfo := "The kingdoms are NOT the same"
+			END IF
+		END SUBMODULE
+		
+SUBMODULE: viewAlliance
+    IMPORT: none
+    EXPORT: allianceInfo(String)
+    PURPOSE: Outputs any currently loaded Alliance's for the user to see.
+    ALGORITHM:	
+				allianceInfo := ""               
+                FOR i := 0 to allianceCount CHANGEBY 1 DO
+                    allianceInfo := allianceInfo 
+									+ allianceArray[i].toString <- none 
+									+ NEWLINE	
+                END FOR
+		END SUBMODULE
+
+SUBMODULE: viewAlliancePopulation
+    IMPORT: none
+    EXPORT: alliancePopulation(String)
+    PURPOSE: Outputs any currently loaded Alliance's populations
+    ALGORITHM:	
+				alliancePopulation := ""				
+                FOR i := 0 TO allianceCount CHANGEBY 1 DO
+                    alliancePopulation := allianceArray[i].population <- none 
+										+ alliancePopulation
+                END FOR
+			END SUBMODULE
+			
+SUBMODULE: updateAlliance
+    IMPORT: none
+    EXPORT: foundInfo(String)
+    PURPOSE: Takes user input for the name of the alliance
+			  they wish to update. If that Alliance's name is among the 
+			  currently loaded Alliance's, they can that Alliance's Banner  
+    ALGORITHM:  foundInfo := " "
+				allianceName := CALL UserInterface method 
+                                     getAllianceName <- none
+                WHILE NOT found AND i IS LESS THAN allianceCount
+					found := (allianceArray[i].getName <- none 
+                              EQUALS allianceName)
+					index := i
+					i := i +1
+				END WHILE
+				IF found THEN
+					foundInfo := "Found"
+					Update current Banner object via UserInterface 
+                    and BannerClass setters
+				ELSE
+					foundInfo := "Not found"
+				ENDIF
+			END SUBMODULE
+			
+SUBMODULE: loadAlliance
+    IMPORT: 
+    EXPORT: return string indicating file being loaded
+    PURPOSE: Loads an Alliance from a file (if valid).  
+	ALGORITHM:
+                fileName := CALL UserInterface method getFileName <- none
+                CALL FileManager method readFile <- fileName, Kingdom object
+            END SUBMODULE
+
+SUBMODULE: saveAlliance
+    IMPORT: Kingdom object, fileOutputName, houseArray[],armyArray[]
+    EXPORT: return string indicating alliance being saved to a file.
+    PURPOSE: Save a created alliance to a file (in CSV format).
+    ALGORITHM:  
+                fileOutputName := CALL UserInterface method 
+                                       getAllianceName <- none
+                CALL FileManager method writeFile <- fileOutputName, Kingdom obj
+			END SUBMODULE
+
+SUBMODULE: equals
+    IMPORT: inObject(Object)
+    EXPORT: same(boolean)	
+    ASSERTION: Checks if each classfield is equal to a identical 
+				constructed object's classfields.
+    ALGORITHM:	
+				same := false
+				IF inObject really is a Kingdom THEN
+                    Make inObj a Kingdom named inKingdom
+                    Get classfields of the object using its getters
+                    IF inAllianceCount EQUALS allianceCount THEN
+						FOR i := 0 TO allianceCount CHANGEBY 1 DO
+                            IF inAllianceArray[i] EQUALS allianceArray[i] THEN
+                                same := true
+                            ENDIF
+                        END FOR
+                    END IF
+                ENDIF
+			END SUBMODULE
+			
+
+SUBMODULE: getAllianceArray
+    IMPORT: none
+    EXPORT: (newAllianceArray[ARRAYLENGTH])(AllianceClass)
+    ASSERTION: Returns the classfield - allianceArray[]
+    ALGORITHM: 
+				CONSTRUCT newAllianceArray USING default
+				FOR i := 0 TO allianceCount CHANGEBY 1 DO
+					newAllianceArray[i] := allianceArray[i].clone <- none
+				END FOR
+			END SUBMODULE
+
+
+
+
+SUBMODULE: getAllianceCount
+    IMPORT: 
+    EXPORT: allianceCount(Integer)
+    ASSERTION: Returns the classfield - allianceCount
+    ALGORITHM:
+				output allianceCount
+			END SUBMODULE
+
+END CLASS

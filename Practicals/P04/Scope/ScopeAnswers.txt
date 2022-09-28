@@ -1,0 +1,6 @@
+1. Line 53
+2. The variable elseVar was not declared within the scope of that corresponding code, therefore elseVar doesn't exist (isn't declared within that scope). It is only declared within the first and third scope. 
+3. The two variables, var1 and var2 are declared within the main scope (for the module - main), therefore the variables are accessible within the 'sub-scopes' that are inside the if statements. 
+4. elseVar is declared within the nested if, unlike Scope 2 had. 
+5. The variable is overwritten from the initial declaration, and "it uses the version declared in the closest scope."
+6. The variable within the closest scope.

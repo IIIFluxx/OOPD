@@ -1,0 +1,225 @@
+CLASS: ArmyClass
+
+PUBLIC CLASS CONSTANTS: 
+						MINFOOTMEN := 3.5
+						MAXFOOTMEN := 160.5
+						MINARCHERS := 1.5
+						MAXARCHERS := 112.5
+						TOL := 0.0001
+						ARCHERS_POP_MULTIPLIER := 450.0 
+						FOOTMEN_POP_MULTIPLIER := 120.0
+						ARCHERS_BS_MULTIPLIER := 50.0
+						FOOTMEN_BS_MULTIPLIER := 14.0
+CLASS FIELDS: 
+                history (String)
+                footmen (Double)
+                archers (Double)
+
+			  
+CONSTRUCTORS:    
+Default:
+    IMPORT: none
+    EXPORT: none
+    ASSERTION:
+    ALGORITHM:
+                footmen := 4.5
+				archers := 2.5
+                history := ""
+			END SUBMODULE
+			
+				
+Alternate:
+    IMPORT: inName(String), inYears(Integer), inBanner(BannerClass), 
+    inFootmen(Double), inArchers(Double), inHistory(String)
+    EXPORT: none
+    ASSERTION: 
+    ALGORITHM:
+				super <- inName, inYears, inBanner
+				setFootmen <- inFootmen
+				setArchers <- inArchers
+				setHistory <- inHistory
+			END SUBMODULE
+
+Copy:
+    IMPORT: inArmyClass (ArmyClass)
+    EXPORT: address of new Army class object
+    ASSERTION: Creates an object with an identical object state as the import.
+    ALGORITHM:	
+				super <- inArmyClass
+				footmen := inArmyClass.getFootmen <- none
+				archers := inArmyClass.getArchers <- none
+				history := inArmyClass.getHistory <- none
+			END SUBMODULE
+        
+                
+MUTATORS:
+				
+SUBMODULE: setFootmen
+    IMPORT: inFootmen (Double)
+    EXPORT: none
+    ASSERTION: sets the number of footmen if imports are valid, otherwise fails. 
+    ALGORITHM:	IF (validateFootmen <- inFootmen) THEN
+					footmen := inFootmen
+				ELSE
+					THROW IllegalArgumentException "Invalid number of footmen"
+				ENDIF
+			END SUBMODULE
+			
+SUBMODULE: setArchers
+    IMPORT: inArchers (Double)
+    EXPORT: none
+    ASSERTION: sets the number of archers if imports are valid, otherwise fails. 
+    ALGORITHM:	IF (validateArchers <- inArchers) THEN
+					archers := inArchers
+				ELSE
+					THROW IllegalArgumentException "Invalid number of squads 
+                                                    of archers"
+				ENDIF
+			END SUBMODULE
+			
+			
+SUBMODULE: setHistory
+    IMPORT: inHistory(String)
+    EXPORT: none
+    ASSERTION: sets the History description if imports are valid, else fails.
+    ALGORITHM: 
+				IF validateHistory <- inHistory THEN
+					history := inHistory
+				ELSE
+					THROW IllegalArgumentException "Invalid history 
+                                                    description - must not 
+                                                    be null"
+				ENDIF
+			END SUBMODULE
+
+SUBMODULE: clone
+    IMPORT: none
+    EXPORT: new ArmyClass object
+    ASSERTION: Creates an ArmyClass object of the data-type AllianceClass,
+               that is a copy of the current ArmyClass object.
+    ALGORITHM:  
+                Export (CONSTRUCT NEW ArmyClass object)
+	        END SUBMODULE
+	
+ACCESSORS:
+    
+SUBMODULE: getFootmen
+    IMPORT: none
+    EXPORT: footmen
+	ALGORITHM: 
+                export copy of footmen
+	        END SUBMODULE
+
+SUBMODULE: getArchers
+    IMPORT: none
+    EXPORT: archers
+	ALGORITHM:
+                export copy of archers
+	        END SUBMODULE
+    
+SUBMODULE: getHistory
+    IMPORT: none
+    EXPORT: history
+	ALGORITHM: 
+                export copy of history
+	        END SUBMODULE
+
+SUBMODULE: equals
+	IMPORT: inObj (Object)
+	EXPORT: isEqual (boolean)
+	ASSERTION: Checks if each classfield is equal to a identical 
+				constructed object's classfields
+    ALGORITHM:
+			isEqual := false
+			IF inObj is really an ArmyClass THEN
+				Make inObj an ArmyClass named inArmyClass
+				IF superclass classfields same as inArmyClass THEN
+					IF footmen same as inArmyClass.inFootmen <-- none THEN
+						IF archers same as inArmyClass.inArchers <-- none THEN
+							IF history same as inArmyClass.inHistory <-- none THEN
+								isEqual := true
+							ENDIF
+						ENDIF
+					ENDIF
+				ENDIF
+			ENDIF
+		END SUBMODULE
+
+SUBMODULE toString
+	IMPORT: none
+	EXPORT: none
+	ASSERTION:
+	ALGORITHM: 
+			    OUTPUT super.toString <- none + "This Army has " + footmen 
+                + " groups of footmen and " + archers 
+                + " squads of archers at its ready." 
+				+ " The history of this Army is that " + history + ". ")
+			END SUBMODULE
+
+SUBMODULE toFileString
+	IMPORT: none
+	EXPORT: none
+	ASSERTION:
+	ALGORITHM: 
+				OUTPUT "A," + super.toFileString <- none + "," + footmen + "," 
+                + archers + "," + history
+	        END SUBMODULE
+	
+SUBMODULE population
+	IMPORT: none
+	EXPORT: none
+	ASSERTION:
+	ALGORITHM: 
+			population := 0
+			sum := 0
+			sum := archers * ARCHERS_POP_MULTIPLIER + 
+                    footmen * FOOTMEN_POP_MULTIPLIER
+			OUTPUT "The Army of " + super.getName <- none  
+            + " consists of " + population + " people. " + NEWLINE 
+		END SUBMODULE
+
+SUBMODULE battleStrength
+	IMPORT: none
+	EXPORT: strength(Integer)
+	ASSERTION:
+	ALGORITHM: 
+			strength := 0
+			strength := (Convert to integer)((footmen * FOOTMEN_BS_MULTIPLIER) 
+						+ (archers * ARCHERS_BS_MULTIPLIER))
+		END SUBMODULE
+
+                
+PRIVATE SUBMODULES:
+
+SUBMODULE: validateHistory
+    IMPORT: inHistory(String)
+    EXPORT: test (boolean)
+    ASSERTION: History description must be non-empty (not null)
+	ALGORITHM:
+				test := false
+				IF inHistory is not null THEN
+					test := true
+		        ENDIF	
+			END SUBMODULE
+
+
+SUBMODULE: validateFootmen
+    IMPORT: inFootmen(Double)
+    EXPORT: A boolean - true or false
+    ASSERTION: Number of groups of footmen must be between 
+                3.5 and 160.5 (inclusive)
+    ALGORITHM: 
+				OUTPUT(inFootmen GREATER THAN OR EQUAL TO MINFOOTMEN
+				AND inFootmen LESS THAN OR EQUAL TO MAXFOOTMEN)
+		END SUBMODULE
+		
+SUBMODULE: validateArchers
+    IMPORT: inArchers(Double)
+    EXPORT: A boolean - true or false
+    ASSERTION: Number of squads of archers must be between 
+                1.5 and 112.5 (inclusive)
+    ALGORITHM:
+				OUTPUT(inArchers GREATER THAN OR EQUAL TO MINARCHERS
+				AND (inArchers LESS THAN OR EQUAL TO MAXARCHERS)
+		END SUBMODULE
+END CLASS

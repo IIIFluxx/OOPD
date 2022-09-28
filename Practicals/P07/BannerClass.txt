@@ -1,0 +1,129 @@
+CLASS: BannerClass
+
+PUBLIC CLASS CONSTANTS: sigil := "WOLF"
+                        sigil := "TOTEM"
+						sigil := "LION"
+						sigil := "DRAGON"
+						
+CLASS FIELDS: sigil (String)
+              bannerColor (String)
+              sigilColor (String)
+
+CONSTRUCTORS:    
+Default:
+    IMPORT: none
+    EXPORT: none
+    ASSERTION:
+    ALGORITHM:  sigil := "WOLF"
+                bannerColor := FFFFFF
+                sigilColor := FFFFFF
+
+Alternate #1:
+    IMPORT: inSigil(String), inBannerColor(Integer), inSigilColor(String)
+    EXPORT: none
+    ASSERTION: 
+    ALGORITHM:
+				IF (validateSigil <- inSigil) AND (validateBannerColor) AND (validateSigilColor) THEN
+					sigil <- inSigil
+					bannerColor <- inBannerColor
+					sigilColor <- inSigilColor
+				ELSE
+					FAIL
+				END IF				
+
+Copy:
+    IMPORT: inBanner (BannerClass)
+    EXPORT: address of new BannerClass class object
+    ASSERTION: Creates an object with an identical object state as the import.
+    ALGORITHM:	sigil := BannerClass.getSigil <- none
+				bannerColor := BannerClass.getBannerColor <- none
+				sigilColor := BannerClass.getSigilColor <- none
+                
+MUTATORS:
+SUBMODULE: setSigil
+    IMPORT: inSigil (String)
+    EXPORT: none
+    ASSERTION: sets the sigil name to inSigil
+    ALGORITHM: sigil := inSigil
+
+SUBMODULE: setBannerColor
+    IMPORT: inBannerColor (String)
+    EXPORT: none
+    ASSERTION: Sets the sigil name if imports are valid, otherwise, fails. 
+    ALGORITHM:  IF (validateBannerColor <- inBannerColor) THEN
+					bannerColor := inBannerColor
+				ELSE
+					FAIL
+				ENDIF
+				
+SUBMODULE: setSigilColor
+    IMPORT: inSigilColor (String)
+    ASSERTION: sets the sigil color if imports are valid, otherwise, fails. 
+    ALGORITHM:	IF (validateSigilColor <- inSigilColor) THEN
+					sigilColor := inSigilColor
+				ELSE
+					FAIL
+				ENDIF
+
+SUBMODULE: clone
+    IMPORT: none
+    EXPORT: BannerClass object
+    ASSERTION: Makes a copy of the BannerClass object.
+    ALGORITHM:  CONSTRUCT NEW BannerClass object := cloneBannerClass
+
+ACCESSORS: /* Returns a COPY of the information*/   
+SUBMODULE: getSigil
+    IMPORT: none
+    EXPORT: sigil
+	ALGORITHM: export copy of sigil
+    
+SUBMODULE: getBannerColor
+    IMPORT: none
+    EXPORT: bannerColor
+	ALGORITHM: export copy of bannerColor
+    
+SUBMODULE: getSigilColor
+    IMPORT: none
+    EXPORT: sigilColor
+	ALGORITHM: export copy of sigilColor
+
+
+SUBMODULE: equals
+	IMPORT: inObj (check to ensure if House object)
+	EXPORT: isEqual (boolean)
+		isEqual := false
+		IF inObj is really a House THEN
+			make inObj to a House named inHouse	
+		IF name same as inName.getName <-- none THEN
+			IF years same as inYears <-- none THEN
+				IF bannermen same as inBannermen <-- none THEN
+					IF castle same as inCastle <-- none THEN
+						isEqual = true
+
+SUBMODULE toString
+	IMPORT: none
+	EXPORT: bannerStr
+	ASSERTION:
+	ALGORITHM: bannerStr = "This house banner consists of a " + sigilColor + "in the shape of a " + sigil " . The banner is coloured " + bannerColor + " ."
+	
+                
+PRIVATE SUBMODULES:
+SUBMODULE: validateBannerColor
+    IMPORT: 
+    EXPORT: 
+    ASSERTION: 
+    ALGORITHM: 
+				_____
+SUBMODULE: validateSigilColor
+    IMPORT: 
+    EXPORT: 
+    ASSERTION: 
+    ALGORITHM:  
+				_____
+
+
+
+
+        
+        
+        

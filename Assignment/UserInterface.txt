@@ -1,0 +1,324 @@
+CLASS UserInterface
+
+// ALL METHODS MUST BE STATIC
+
+	SUBMODULE getObject
+	IMPORT: none
+	EXPORT: userAlliance(Integer)
+	PURPOSE: Obtains what type of Alliance the user wishes to make.
+	ALGORITHM:
+		userAlliance := ""
+		OUTPUT "Please enter 1 (one) for House, 2 (two) for Army "
+                + "for the type of Alliance you wish to make. ")
+		INPUT userAlliance
+
+
+SUBMODULE: getHouseObject
+	IMPORT: none
+	EXPORT: New object containing House classfields, of data-type AllianceClass 
+	ASSERTION: Makes a new object only IF inputs are valid
+	ALGORITHM:
+				DO
+					TRY
+						OUTPUT "Please input the name of your House"
+						INPUT name
+						test := validateString <- name
+					END TRY
+					CATCH IllegalArgumentException
+						Clear line
+						showError <- errormsg
+					END CATCH
+				WHILE test := FALSE
+				
+				test := FALSE
+				
+				DO
+					TRY
+						OUTPUT "Please input the number of years"
+						INPUT years
+						test := validateYears <- years
+					END TRY
+					CATCH InputMismatchException
+						Clear line
+						showError <- errormsg
+					END CATCH
+					CATCH IllegalArgumentException
+						Clear line
+						showError <- errormsg
+					END CATCH
+				WHILE test := FALSE
+				
+				test := FALSE
+				DO
+					TRY
+						OUTPUT "Please input the number of bannermen"
+						INPUT bannermen
+						test := validateBannermen <- bannermen
+					END TRY
+					CATCH InputMismatchException
+						Clear line
+						showError <- errormsg
+					END CATCH
+					CATCH IllegalArgumentException
+						Clear line
+						showError <- errormsg
+					END CATCH
+				WHILE test := FALSE
+				
+				test := FALSE
+			
+				DO
+					TRY
+						OUTPUT "Please input the name of your Castle"
+						INPUT castle
+						test := validateString <- castle
+					END TRY
+					CATCH IllegalArgumentException
+						Clear line
+						showError <- errormsg
+					END CATCH
+				WHILE test := FALSE
+				
+				banner := getBannerObject <- none
+				CONSTRUCT houseObj USING name, years, banner, bannermen, castle
+			END SUBMODULE
+				
+	SUBMODULE getArmyObject
+	IMPORT: none
+	EXPORT: New object containing ArmyClass classfields, 
+			of data-type AllianceClass
+	ASSERTION: Makes a new object only IF inputs are valid
+	ALGORITHM:
+	
+				DO
+					TRY
+						OUTPUT "Please input the name of your Army"
+						INPUT name
+						test := validateString <- name
+					END TRY
+					CATCH IllegalArgumentException
+						Clear line
+						showError <- errormsg
+					END CATCH
+				WHILE test := FALSE
+				
+				test := FALSE
+				
+				DO
+					TRY
+						OUTPUT "Please input the number of years"
+						INPUT years
+						test := validateYears <- years
+					END TRY
+					CATCH InputMismatchException
+						Clear line
+						showError <- errormsg
+					END CATCH
+					CATCH IllegalArgumentException
+						Clear line
+						showError <- errormsg
+					END CATCH
+				WHILE test := FALSE
+				
+				test := FALSE
+				
+				
+				DO
+					TRY
+						OUTPUT "Please input the number of footmen"
+						INPUT footmen
+						test := validateFootmen <- footmen
+					END TRY
+					CATCH InputMismatchException
+						Clear line
+						showError <- errormsg
+					END CATCH
+					CATCH IllegalArgumentException
+						Clear line
+						showError <- errormsg
+					END CATCH
+				WHILE test := FALSE
+				
+				test := FALSE
+				
+				
+				DO
+					TRY
+						OUTPUT "Please input the number of archers"
+						INPUT archers
+						test := validateArchers <- archers
+					END TRY
+					CATCH InputMismatchException
+						Clear line
+						showError <- errormsg
+					END CATCH
+					CATCH IllegalArgumentException
+						Clear line
+						showError <- errormsg
+					END CATCH
+				WHILE test := FALSE
+				
+				test := FALSE
+
+				DO
+					TRY
+						OUTPUT "Please input the details of your army's history"
+						INPUT history
+						test := validateString <- history
+					END TRY
+					CATCH IllegalArgumentException
+						Clear line
+						showError <- errormsg
+					END CATCH
+				WHILE test := FALSE
+				
+				test := FALSE
+								
+				banner := getBannerObject <- none
+				CONSTRUCT armyObj USING name, years, banner, footmen, 
+										archers, history
+			END SUBMODULE
+
+
+SUBMODULE: getBannerObject
+	IMPORT: none
+	EXPORT: New BannerClass object
+	ASSERTION: Makes a new BannerClass object only IF inputs are valid
+	ALGORITHM:
+				DO
+					TRY
+					OUTPUT "Please input the name of the sigil: 
+						   + NEWLINE WOLF, TOTEM, LION or DRAGON "
+					INPUT sigil
+					test := validateSigil <- sigil
+					END TRY
+					
+					CATCH IllegalArgumentException 
+						Clear line
+						showError <- errormsg
+					END CATCH
+				WHILE test := FALSE
+				
+				test := FALSE
+				
+				
+				DO
+					TRY
+					OUTPUT "Please enter the colour of the banner as 
+							a hex string: "
+					INPUT bannerColor
+					test := validateColor <- bannerColor
+					END TRY
+					
+					CATCH IllegalArgumentException 
+						Clear line
+						showError <- errormsg
+					END CATCH
+				WHILE test := FALSE
+				
+				test := FALSE
+				
+				
+				DO
+					TRY
+					OUTPUT "Please enter the colour of the sigil
+							as a hex string: "
+					INPUT sigilColor
+					test := validateColor <- sigilColor
+					END TRY
+					
+					CATCH IllegalArgumentException 
+						Clear line
+						showError <- errormsg
+					END CATCH
+				WHILE test := FALSE
+				
+				CONSTRUCT bannerObj USING sigil, bannerColor, sigilColor
+			END SUBMODULE
+	
+SUBMODULE: getFileName
+	IMPORT: none
+	EXPORT: fileName(String)
+	PURPOSE: Retrieves the name of the file from user.
+	ALGORITHM: 
+				fileName := ""
+				OUTPUT "Please enter the name of your file
+						you wish to load: "
+				INPUT fileName
+			END SUBMODULE
+	
+SUBMODULE: getAllianceName
+	IMPORT: none
+	EXPORT: allianceName(String)
+	PURPOSE: Retrieves the name of the alliance from user.
+	ALGORITHM: 
+				allianceName := ""
+				OUTPUT "Please enter the name of the alliance"
+				INPUT allianceName
+			END SUBMODULE
+		
+SUBMODULE: showError
+	IMPORT: none
+	EXPORT: error(String)
+	PURPOSE: Prints out a specific error message to user.
+	ALGORITHM: 
+				error := ""
+				OUTPUT error
+			END SUBMODULE
+
+COMMENT: Validation submodules
+
+SUBMODULE: validateString
+    IMPORT: inString (String)
+    EXPORT: test (boolean)
+    ASSERTION: String must be non-empty (not null)
+	ALGORITHM:
+			test := false
+			IF inName is not null THEN
+				test := true
+			ENDIF	
+		END SUBMODULE
+	
+				
+SUBMODULE: validateYears
+    IMPORT: inYears(Integer)
+    EXPORT: valid (boolean)
+    ASSERTION: Number of years must be between 1 and 10,000 (inclusive)
+    ALGORITHM:
+			valid := (inYears GREATER THAN OR EQUAL TO minyears
+					  AND inYears LESS THAN OR EQUAL TO maxyears)
+		END SUBMODULE
+				
+SUBMODULE: validateBannermen
+    IMPORT: inBannermen(Integer)
+    EXPORT: valid (boolean)
+    ASSERTION: Number of bannermen must be between 25 and 80,000 (inclusive).
+    ALGORITHM:  
+				valid := false
+				valid := (inBannermen GREATER THAN OR EQUAL TO minbannermen
+						  AND inBannermen LESS THAN OR EQUAL TO maxbannermen)
+    END SUBMODULE
+
+SUBMODULE: validateFootmen
+    IMPORT: inFootmen(Double)
+    EXPORT: A boolean - true or false
+    ASSERTION: Number of groups of footmen must be between 
+                3.5 and 160.5 (inclusive)
+    ALGORITHM: 
+				OUTPUT(inFootmen GREATER THAN OR EQUAL TO minfootmen
+					   AND inFootmen LESS THAN OR EQUAL TO maxfootmen)
+		END SUBMODULE
+		
+		
+SUBMODULE: validateArchers
+    IMPORT: inArchers(Double)
+    EXPORT: A boolean - true or false
+    ASSERTION: Number of squads of archers must be between 
+                1.5 and 112.5 (inclusive)
+    ALGORITHM:
+				OUTPUT(inArchers GREATER THAN OR EQUAL TO minarchers 
+					   AND inArchers LESS THAN OR EQUAL TO maxarchers)
+		END SUBMODULE
+		
+				
+END CLASS				

@@ -1,0 +1,39 @@
+1)  What does the program do?
+	Takes a randomly generated number, and assigns it to a integer variable. Based on the variable, it gives the user the output respective to the randomly generated number (case statement). 
+	
+2)  How many methods are there?
+	1
+	
+3)  How many lines does each method have?
+	
+	
+4)  How many levels of control structure nesting are in main?
+	3
+	
+5)  What does the variable usefulThing do?
+	
+	There is no variable usefulThing
+	
+6)  What is the purpose of the if statement on line 6?
+	
+	There is no if statement on line 6 
+
+7)  How many control structures are there?
+
+	One
+	
+8)  How difficult would it be to allow the user to specify an upper and lower bound?
+
+	Very difficult
+	
+9)	How difficult were these questions to answer?
+	
+	Fairly difficult :I
+	
+(a)  how much easier would the questions be to answer based on the current formatof the code compared to the original format?
+
+	Immensely.
+
+(b)  Using two examples, explainwhythe current format improves the understand-ability of the code.
+
+	Indentation, and relevancy of variables alone can make it 100x easier to even simply understand the code from a fellow programmers perspective. Comments would make it more friendly to people with inadequate coding knowledge as well.

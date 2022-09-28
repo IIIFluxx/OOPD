@@ -1,0 +1,18 @@
+MAIN
+
+    DO
+        OUTPUT "Please enter an integer between one(1) and three-hundred (300)
+        INPUT arrayLength
+    WHILE arrayLength < 1 AND arrayLength > 300
+    Assign a random number to every number in the array
+    
+    DO
+        OUTPUT "Please enter any positive integer"
+        INPUT numOne
+    WHILE input < 0
+    Iterate for loop cycling through all elements in the array
+    IF array[i] is equal to numOne THEN
+        OUTPUT "Found: " + numOne + "in " + i
+    ELSE
+        OUTPUT "Not found: " + numOne
+END

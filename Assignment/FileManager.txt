@@ -1,0 +1,155 @@
+CLASS: FileManager
+
+						
+CLASS FIELDS: 	lineArray(String)
+
+			
+SUBMODULE: readFile
+    IMPORT: fileName(String), kingdom(Kingdom)
+    EXPORT: none
+	ASSERTION: Reads a file line-by-line and calls processing methods.
+    ALGORITHM: 
+			line := ""
+			
+			TRY 
+				READ line ONE LINE AT A TIME
+				lineNum := 0
+				WHILE line DOES NOT EQUAL NULL DO 
+					lineNum := lineNum + 1
+					processLine <- line,kingdom
+					read line
+				ENDWHILE
+				Close File
+			END TRY
+			CATCH ANY NECESSARY EXCEPTIONS
+			
+			END CATCH
+		END SUBMODULE
+	
+	
+SUBMODULE: processLine
+    IMPORT: line(String), kingdom(Kingdom)
+    EXPORT: none
+    ASSERTION: Conducts all line processing - splits a CSV file into 
+			   a line array and constructs an appropriate object to pass
+			   back to the kingdom object's methods. 
+    ALGORITHM:
+
+			TRY
+				split lineArray[] by commas
+				IF LENGTH OF lineArray DOES NOT EQUAL 8 AND 9
+					THROW IllegalArgumentException "Invalid length"
+				END IF
+				IF LENGTH OF lineArray[0] DOES NOT EQUAL 1
+					THROW IllegalArgumentException "Invalid input"
+				IF lineArray[0] DOES NOT EQUAL 'H' OR 'A'
+					throw IllegalArgumentException "Invalid type"
+				END IF
+				
+				isValid := validateLine <- lineArray
+				
+				IF isValid := TRUE THEN
+					name := lineArray[1]
+					years := ((Parse into Integer)(lineArray[2])
+					type := CHARACTER AT lineArray[0]
+					sigil := lineArray[3]
+					sigilColour := lineArray[4]
+					bannerColor := lineArray[5]
+					CONSTRUCT bannerObj(BannerClass) USING sigil, bannerColour,
+                                                           sigilColour
+					CASE type OF 
+						H:			
+							bannermen := lineArray[6] 
+							castle := lineArray[7] 
+							CONSTRUCT newAllianceObj(AllianceClass) 
+                                                        USING House classfields
+							kingdom.addNewAlliance <- newAllianceObj
+							break out of loop
+						A:
+							footmen := (Parse into Double)(lineArray[6]) 
+							archers := (Parse into Double)(lineArray[7]) 
+							history := lineArray[8] 
+							CONSTRUCT newAllianceObj(AllianceClass) 
+                                                    USING ArmyClass classfields 
+							kingdom.addNewAlliance <- newAllianceObj
+							break out of loop
+						DEFAULT:
+							THROW IllegalArgumentException "Invalid type"
+					END CASE
+				END IF
+			END TRY
+			CATCH ANY NECESSARY EXCEPTIONS
+			
+			END CATCH
+	END SUBMODULE
+
+
+SUBMODULE: writeFile
+	IMPORT: fileOutputName(String), kingdom(Kingdom)
+	EXPORT: none
+	ASSERTION: Writes the lineArray's contents to a file containing a
+			   user specified fileOutputName in CSV format as described
+			   in the assignment specification.
+	ALGORITHM:
+			TRY
+				Open file writer 
+				Use accessors to get allianceArray and allianceArrayCount
+				FOR i:=0 TO allianceCount CHANGEBY 1 DO
+					pw.OUTPUT toFileString per House array element
+				END FOR
+				Close file writer
+			END TRY
+		CATCH ANY NECESSARY EXCEPTIONS
+		END CATCH	
+	END SUBMODULE
+
+SUBMODULE: validateLine
+	IMPORT: lineArray(String array)
+	EXPORT: isValid(boolean)
+	ASSERTION: 
+	ALGORITHM:
+			isValid := false
+			name := lineArray[1]                                            
+			years := Integer.parseInt(lineArray[2])
+			type := lineArray[0].charAt(0)                          
+			sigil := lineArray[3]                                   
+			sigilColor := lineArray[5]                                      
+			bannerColor := lineArray[4]
+			isValid := Call the following UserInterface methods:
+							validateString <- name 
+							AND validateYears <- years 
+							AND validateSigil <- sigil 
+							AND validateColor <- sigilColor 
+							AND validateColor <- bannerColor
+		END SUBMODULE
+
+SUBMODULE: validateArmy
+	IMPORT: lineArray(String array)
+	EXPORT: valid(boolean)
+	ASSERTION: Checks whether ArmyClass' classfields 
+               in the inputted file are valid 
+	ALGORITHM:
+			valid(boolean):= false
+			footmen := (Parse into Double)(lineArray[6])
+			archers := Double.parseDouble(lineArray[7])
+			history := lineArray[8]
+			valid := Call the following UserInterface methods:
+							validateFootmen <- footmen 
+							AND validateArchers <- archers
+							AND validateString <- history
+			return valid
+		END SUBMODULE
+
+SUBMODULE: validateHouse
+	IMPORT: lineArray(String array)
+	EXPORT: valid(boolean)
+	ASSERTION: Checks whether House' classfields in the inputted file are valid
+	ALGORITHM:
+			valid := false
+			bannermen := Integer.parseInt(lineArray[6])
+			castle := lineArray[7]
+			valid := Call the following UserInterface methods:
+					validateBannermen <- bannermen 
+					AND validateString <- castle
+        END SUBMODULE
+END CLASS

@@ -1,0 +1,163 @@
+CLASS: House
+
+PUBLIC CLASS CONSTANTS: minyears := 1
+                        maxyears := 10000
+						minbannermen := 25
+						maxbannermen := 80000
+						
+CLASS FIELDS: name (String)
+              years (Integer)
+              bannermen (Integer)
+              castle (String)
+			  banner(BannerClass)
+			
+
+CONSTRUCTORS:    
+Default:
+    IMPORT: none
+    EXPORT: none
+    ASSERTION:
+    ALGORITHM:  name := "Archer"
+                years := 2
+                bannermen := 2
+                castle := ""
+				banner := new BannerClass
+
+Alternate:
+    IMPORT: inName(String), inYears(Integer), inBannermen(Integer), inCastle(String), inBanner(BannerClass)
+    EXPORT: none
+    ASSERTION: 
+    ALGORITHM:
+				IF (validateYears <- inYears) AND (validateBannermen) THEN
+					name <- inName
+					years <- inYears
+					bannermen <- inBannermen
+					castle <- inCastle
+                    banner <- inBanner
+				ELSE
+					FAIL
+				END IF				
+
+Copy:
+    IMPORT: inHouse (House)
+    EXPORT: address of new House class object
+    ASSERTION: Creates an object with an identical object state as the import.
+    ALGORITHM:	name := inHouse.getName <- none
+				years := inHouse.getYears <- none
+				bannermen := inHouse.getBannermen <- none
+				castle := inHouse.getCastle <- none
+				banner := new BannerClass(inHouse.getBanner <- none)
+        
+                
+MUTATORS:
+SUBMODULE: setName
+    IMPORT: inName (String)
+    EXPORT: none
+    ASSERTION: sets the name to inName
+    ALGORITHM: name := inName
+
+SUBMODULE: setYears
+    IMPORT: inYear (Integer)
+    EXPORT: none
+    ASSERTION: Sets the year if imports are valid, otherwise, fails. 
+    ALGORITHM:  IF (validateYears <- inYears) THEN
+					years := inYears
+				ELSE
+					FAIL
+				ENDIF
+				
+SUBMODULE: setBannermen
+    IMPORT: inBannermen (Integer)
+    EXPORT: 
+    ASSERTION: sets the number of bannermen if imports are valid, otherwise, fails. 
+    ALGORITHM:	IF (validateBannermen <- inBannermen) THEN
+					bannermen := inBannermen
+				ELSE
+					FAIL
+				ENDIF
+
+SUBMODULE: setCastle
+    IMPORT: inCastle(String)
+    EXPORT: none
+    ASSERTION: sets the name of the castle.
+    ALGORITHM: castle := inCastle
+
+SUBMODULE: setBanner
+    IMPORT: inBanner(BannerClass)
+    EXPORT: none
+    ASSERTION: sets the banner object.
+    ALGORITHM: banner := inBanner
+
+
+
+SUBMODULE: clone
+    IMPORT: none
+    EXPORT: cloneHouse object
+    ASSERTION: Makes a copy of the House object.
+    ALGORITHM:  CONSTRUCT NEW House object := cloneHouse
+
+ACCESSORS: /* Returns a COPY of the information*/   
+SUBMODULE: getName
+    IMPORT: none
+    EXPORT: name
+	ALGORITHM: export copy of name
+    
+SUBMODULE: getYears
+    IMPORT: none
+    EXPORT: years
+	ALGORITHM: export copy of the number of years
+    
+SUBMODULE: getBannermen
+    IMPORT: none
+    EXPORT: bannermen
+	ALGORITHM: export copy of bannermen
+    
+SUBMODULE: getCastle
+    IMPORT: none
+    EXPORT: castle
+	ALGORITHM: export copy of castle
+
+
+SUBMODULE: equals
+	IMPORT: inObj (check to ensure if House object)
+	EXPORT: isEqual (boolean)
+		isEqual := false
+		IF inObj is really a House THEN
+			make inObj to a House named inHouse	
+		IF name same as inHouse.getName <-- none THEN
+			IF years same as inYears <-- none THEN
+				IF bannermen same as inBannermen <-- none THEN
+					IF castle same as inCastle <-- none THEN
+						IF banner same as inBanner
+						isEqual = true
+
+SUBMODULE toString
+	IMPORT: none
+	EXPORT: none
+	ASSERTION:
+	ALGORITHM: OUTPUT "The House of " + name + "has existed for " + years + " years. This house has "
+								+ bannermen + " Bannerman and a castle named: " + castle + ". "
+
+
+
+	
+                
+PRIVATE SUBMODULES:
+SUBMODULE: validateYears
+    IMPORT: inYears(Integer)
+    EXPORT: valid (boolean)
+    ASSERTION: Number of years must be between 1 and 10,000 (inclusive)
+    ALGORITHM:  
+				valid := (inYears >= minyears) AND (inYears <= maxyears)
+			
+			
+SUBMODULE: validateBannermen
+    IMPORT: inBannermen(Integer)
+    EXPORT: valid (boolean)
+    ASSERTION: Number of bannermen must be between 25 and 80,000 (inclusive).
+    ALGORITHM:  
+				valid := (inBannermen >= maxbannermen) AND (inBannermen <= minbannermen)      
+        
+        
+        
+        
